@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ 'DASHBOARD.TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row *ngIf="tracking">
+      <ion-col>
+        <ion-item>
+          <ion-label>
+            {{ 'DASHBOARD.CONTINUE' | translate }}
+          </ion-label>
+        </ion-item>
+        <app-manga-cover *ngFor="let status of tracking" [manga]="status.Series" [href]="'/dashboard/series/' + status.IdSeries + '/chapter/' + status.Chapter.Id" [subtitle]="'MANGA.CHAPTER_TRACK' | translate:{chapter: status.Chapter.Number, page: status.ChapterTrack.Page}"></app-manga-cover>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="series">
+      <ion-col>
+        <ion-item>
+          <ion-label>
+            {{ 'DASHBOARD.DISCOVER' | translate }}
+          </ion-label>
+        </ion-item>
+        <app-manga-cover *ngFor="let manga of series" [manga]="manga" [href]="'/dashboard/series/' + manga.Id" [subtitle]="'MANGA.CHAPTER_COUNT' | translate:{count: manga.ChapterCount}"></app-manga-cover>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

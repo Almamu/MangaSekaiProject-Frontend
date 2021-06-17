@@ -1,0 +1,4 @@
+ion-card { width: 160px; float: left }
+ion-card-title { text-overflow: ellipsis; white-space: nowrap !important; overflow: hidden; font-size: .9rem }
+ion-card-subtitle { font-size: .6rem }
+:host { margin: 0 auto }

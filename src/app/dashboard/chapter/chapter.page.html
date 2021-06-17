@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start" defaultHref="dashboard"></ion-back-button>
+    <ion-title *ngIf="pages">{{ 'CHAPTER.TITLE' | translate:{name:pages.serie.Name, chapter:pages.chapter.Number} }}</ion-title>
+    <ion-buttons slot="end" *ngIf="pages">
+      <ion-button color="success" *ngIf="pages.next" [href]="'/series/' + pages.serie.Id + '/chapter/' + pages.next.Id">Previous chapter</ion-button>
+      <ion-button color="success" *ngIf="pages.next" [href]="'/series/' + pages.serie.Id + '/chapter/' + pages.next.Id">Next chapter</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="pages">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-buttons>
+          <ion-button color="success" *ngIf="readMode !== 'vertical'" (click)="setReadMode ('vertical')">Read vertically</ion-button>
+          <ion-button color="success" *ngIf="readMode !== 'horizontal'" (click)="setReadMode ('horizontal')">Read horizontally</ion-button>
+        </ion-buttons>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" *ngFor="let page of pages.pages">
+        <ion-img [src]="page"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
