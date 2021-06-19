@@ -39,7 +39,7 @@
     <ion-row *ngIf="chapters">
       <ion-col>
         <app-cover-container>
-          <app-chapter-cover *ngFor="let chapter of chapters" [manga]="serie" [href]="'/series/' + serie.Id + '/chapter/' + chapter.Id" [title]="'SERIES.CHAPTER_NUMBER' | translate:{number: chapter.Number}"></app-chapter-cover>
+          <app-chapter-cover *ngFor="let chapter of chapters" [manga]="serie" [href]="'/dashboard/series/' + serie.Id + '/chapter/' + chapter.Id" [title]="'SERIES.CHAPTER_NUMBER' | translate:{number: chapter.Number}"></app-chapter-cover>
         </app-cover-container>
       </ion-col>
     </ion-row>

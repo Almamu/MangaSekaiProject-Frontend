@@ -17,7 +17,8 @@
   },
   "MANGA": {
     "CHAPTER_COUNT": "{{ count }} chapter(s)",
-    "CHAPTER_TRACK": "Chapter {{ chapter }}, page {{ page }}"
+    "CHAPTER_TRACK": "Chapter {{ chapter }}",
+    "CHAPTER_TRACK_COUNT": "Chapter {{ chapter }}, page {{ page }}"
   },
   "CHAPTER": {
     "TITLE": "{{ name }} - Chapter {{ chapter }}"

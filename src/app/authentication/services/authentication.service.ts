@@ -36,7 +36,7 @@ export class AuthenticationService {
    */
   login (username: string, password: string) {
     const authorization = 'Basic ' + btoa (encodeURIComponent (username) + ':' + encodeURIComponent (password));
-    const url = this.api.url ('login');
+    const url = this.api.api ('login');
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const headers = new HttpHeaders ({Authorization: authorization});
 

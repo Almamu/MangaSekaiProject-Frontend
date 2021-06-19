@@ -11,7 +11,7 @@ export class TrackingService {
   constructor (public api: ApiService, public http: HttpClient) { }
 
   getTracking (): Observable<SeriesTrackModel[]> {
-    const url = this.api.url ('track/series');
+    const url = this.api.api ('track/series');
 
     return this.http.get <SeriesTrackModel []> (url);
   }

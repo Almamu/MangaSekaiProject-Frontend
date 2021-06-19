@@ -4,6 +4,7 @@ import {PagesModel} from '../../models/pages.model';
 import {ViewDidEnter} from '@ionic/angular';
 import {SeriesService} from '../../services/series.service';
 import {ActivatedRoute} from '@angular/router';
+import {AuthenticatedApiService} from '../../authentication/services/authenticated-api.service';
 
 @Component({
   selector: 'app-chapter',
@@ -14,8 +15,15 @@ export class ChapterPage implements ViewDidEnter {
 
   pages: PagesModel;
   readMode: string;
+  sliderOptions = {
+    preventClicksPropagation: true
+  };
 
-  constructor (private seriesService: SeriesService, private activatedRoute: ActivatedRoute) {
+  constructor (
+    private seriesService: SeriesService,
+    private activatedRoute: ActivatedRoute,
+    private api: AuthenticatedApiService
+  ) {
     this.readMode = localStorage.getItem ('readmode');
 
     if (this.readMode !== 'horizontal' && this.readMode !== 'vertical')
@@ -32,6 +40,10 @@ export class ChapterPage implements ViewDidEnter {
   }
 
   setReadMode (newMode: string) {
-    this.readMode = newMode;
+    localStorage.setItem ('readmode', this.readMode = newMode);
+  }
+
+  onScroll (event) {
+    console.dir (event);
   }
 }

@@ -3,13 +3,13 @@
     <ion-back-button slot="start" defaultHref="dashboard"></ion-back-button>
     <ion-title *ngIf="pages">{{ 'CHAPTER.TITLE' | translate:{name:pages.serie.Name, chapter:pages.chapter.Number} }}</ion-title>
     <ion-buttons slot="end" *ngIf="pages">
-      <ion-button color="success" *ngIf="pages.next" [href]="'/series/' + pages.serie.Id + '/chapter/' + pages.next.Id">Previous chapter</ion-button>
-      <ion-button color="success" *ngIf="pages.next" [href]="'/series/' + pages.serie.Id + '/chapter/' + pages.next.Id">Next chapter</ion-button>
+      <ion-button color="success" *ngIf="pages.next" [href]="'/dashboard/series/' + pages.serie.Id + '/chapter/' + pages.next.Id">Next chapter</ion-button>
+      <ion-button color="success" *ngIf="pages.previous" [href]="'/dashboard/series/' + pages.serie.Id + '/chapter/' + pages.previous.Id">Previous chapter</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="pages">
+<ion-content *ngIf="pages" scrollEvents="true" (ionScroll)="onScroll ($event)">
   <ion-grid>
     <ion-row>
       <ion-col size="12">
@@ -19,9 +19,18 @@
         </ion-buttons>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col size="12" *ngFor="let page of pages.pages">
-        <ion-img [src]="page"></ion-img>
+    <ion-row *ngIf="readMode === 'vertical'">
+      <ion-col size="12" class="ion-text-center">
+        <ion-img *ngFor="let page of pages.pages" [src]="api.basepath (page)" class="manga-page"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="readMode === 'horizontal'">
+      <ion-col size="12">
+        <ion-slides pager="false" [options]="sliderOptions">
+          <ion-slide *ngFor="let page of pages.pages">
+            <ion-img [src]="api.basepath (page)"></ion-img>
+          </ion-slide>
+        </ion-slides>
       </ion-col>
     </ion-row>
   </ion-grid>

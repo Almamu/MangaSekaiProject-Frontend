@@ -16,25 +16,25 @@ export class SeriesService {
   }
 
   getDiscover (): Observable<SeriesModel[]> {
-    const url = this.api.url ('series');
+    const url = this.api.api ('series');
 
     return this.http.get <SeriesModel[]> (url);
   }
 
   getSeries (seriesId: number): Observable<SeriesModel> {
-    const url = this.api.url ('series/' + seriesId);
+    const url = this.api.api ('series/' + seriesId);
 
     return this.http.get <SeriesModel> (url);
   }
 
   getChapters (seriesId: number): Observable<ChapterModel[]> {
-    const url = this.api.url ('series/' + seriesId + '/chapters');
+    const url = this.api.api ('series/' + seriesId + '/chapters');
 
     return this.http.get <ChapterModel[]> (url);
   }
 
   getPages (seriesId: number, chapterId: number): Observable<PagesModel> {
-    const url = this.api.url ('series/' + seriesId + '/chapter/' + chapterId);
+    const url = this.api.api ('series/' + seriesId + '/chapter/' + chapterId);
 
     return this.http.get <PagesModel> (url);
   }

@@ -13,7 +13,7 @@
             {{ 'DASHBOARD.CONTINUE' | translate }}
           </ion-label>
         </ion-item>
-        <app-manga-cover *ngFor="let status of tracking" [manga]="status.Series" [href]="'/dashboard/series/' + status.IdSeries + '/chapter/' + status.Chapter.Id" [subtitle]="'MANGA.CHAPTER_TRACK' | translate:{chapter: status.Chapter.Number, page: status.ChapterTrack.Page}"></app-manga-cover>
+        <app-manga-cover *ngFor="let status of tracking" [manga]="status.Series" [href]="'/dashboard/series/' + status.IdSeries + '/chapter/' + status.Chapter.Id" [subtitle]="(status.ChapterTrack.Page === 0 ? 'MANGA.CHAPTER_TRACK' : 'MANGA.CHAPTER_TRACK_COUNT') | translate:{chapter: status.Chapter.Number, page: status.ChapterTrack.Page}"></app-manga-cover>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="series">
