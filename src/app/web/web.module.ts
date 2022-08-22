@@ -4,7 +4,7 @@ import {IonicModule} from '@ionic/angular';
 import {TranslateModule} from '@ngx-translate/core';
 import {ComponentsModule} from '../components/components.module';
 import {NgModule} from '@angular/core';
-import {BaseComponent} from './base/base.component';
+import {BaseComponent} from './views/base/base.component';
 
 @NgModule ({
   imports: [

@@ -15,7 +15,7 @@ const routes: Routes = [
     component: DeviceDetectorComponent,
     children: [
       {
-        path: 'dashboard',
+        path: '',
         loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardPageModule)
       },
     ]

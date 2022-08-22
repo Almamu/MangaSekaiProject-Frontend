@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   api: {
-    hostname: 'localhost',
+    hostname: '192.168.100.5',
     port: '8080',
     protocol: 'http',
     basepath: '/api/index.php/',

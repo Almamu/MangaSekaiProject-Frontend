@@ -18,7 +18,7 @@ export class LoginComponent {
   login () {
     // TODO: HANDLE ERRORS
     this.authentication.login (this.userdata.username, this.userdata.password).subscribe ((result) => {
-      this.router.navigate (['dashboard']);
+      this.router.navigate (['/']);
     });
   }
 }

@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
+import {Injector, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy, Platform} from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -11,6 +11,9 @@ import {NetworkModule} from './network/network.module';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {AuthenticationModule} from './authentication/authentication.module';
+import {SettingsService} from './services/settings.service';
+import {SqlSettingsService} from './services/sql-settings.service';
+import {WebSettingsService} from './services/web-settings.service';
 
 // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function createTranslateLoader (http: HttpClient) {

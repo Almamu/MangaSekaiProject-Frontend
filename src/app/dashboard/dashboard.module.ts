@@ -7,32 +7,27 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardPage } from './dashboard/dashboard.page';
 import {RouterModule, Routes} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
-import {AuthenticationResolver} from '../authentication/resolvers/authentication.resolver';
 import {ComponentsModule} from '../components/components.module';
 import {SeriesPage} from './series/series.page';
 import {ChapterPage} from './chapter/chapter.page';
+import {AuthenticationGuard} from '../authentication/guards/authentication-guard.service';
+import {SmartphoneInitializedGuard} from '../smartphone/guards/smartphone-initialized.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: DashboardPage,
-    resolve: {
-      auth: AuthenticationResolver
-    }
+    canActivate: [AuthenticationGuard, SmartphoneInitializedGuard]
   },
   {
     path: 'series/:seriesId',
     component: SeriesPage,
-    resolve: {
-      auth: AuthenticationResolver
-    }
+    canActivate: [AuthenticationGuard]
   },
   {
     path: 'series/:seriesId/chapter/:chapterId',
     component: ChapterPage,
-    resolve: {
-      auth: AuthenticationResolver
-    }
+    canActivate: [AuthenticationGuard]
   }
 ];
 

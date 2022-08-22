@@ -1,5 +1,7 @@
 {
   "name": "MangaSekaiProject",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
