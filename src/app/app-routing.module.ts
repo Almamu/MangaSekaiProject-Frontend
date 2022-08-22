@@ -1,21 +1,16 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {AuthenticationModule, routes as AuthRoutes} from './authentication/authentication.module';
+import {routes as AuthRoutes} from './authentication/authentication.module';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'auth/login',
-    pathMatch: 'full'
-  },
   {
     path: 'auth',
     children: AuthRoutes
   },
   {
-    path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  },
+    path: '',
+    loadChildren: () => import ('./common/common.module').then (m => m.CommonModule)
+  }
 ];
 
 @NgModule({

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthenticationService} from '../../authentication/services/authentication.service';
+import {Component} from '@angular/core';
 import {ViewDidEnter} from '@ionic/angular';
 import {SeriesService} from '../../services/series.service';
 import {SeriesModel} from '../../models/series.model';

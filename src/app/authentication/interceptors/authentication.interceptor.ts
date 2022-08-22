@@ -10,9 +10,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
   constructor (private authentication: AuthenticationService, private router: Router) { }
 
   intercept (req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.dir (this.authentication.validateSession ());
-
-    if (this.authentication.validateSession () === true && req.headers.has ('Authorization') == false) {
+    if (this.authentication.validateSession () === true && req.headers.has ('Authorization') === false) {
       req = req.clone ({
         setHeaders: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
