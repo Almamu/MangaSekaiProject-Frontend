@@ -17,7 +17,7 @@ const routes: Routes = [
   {
     path: '',
     component: DashboardPage,
-    canActivate: [AuthenticationGuard, SmartphoneInitializedGuard]
+    canActivate: [AuthenticationGuard]
   },
   {
     path: 'series/:seriesId',

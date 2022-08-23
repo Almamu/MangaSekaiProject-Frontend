@@ -1,4 +1,5 @@
 import {Observable} from 'rxjs';
+import {ServerModel} from '../models/server.model';
 
 export enum Settings {
   firstRun = 'first-run-completed'
@@ -7,15 +8,19 @@ export enum Settings {
 export abstract class SettingsService {
   protected settings: Record<string, any> = {};
 
-  abstract isMobile(): boolean;
+  abstract get isMobile(): boolean;
 
   get isFirstRunDone (): boolean {
-    return !this.isMobile () || this.settings [Settings.firstRun];
+    return !this.isMobile || this.settings [Settings.firstRun];
   }
 
   set isFirstRunDone (value: boolean) {
     this.settings [Settings.firstRun] = value;
   }
+
+  abstract get serverList (): ServerModel [];
+  abstract addServer (server: ServerModel): void;
+  abstract removeServer (server: ServerModel): void;
 
   abstract save (): Observable<any>;
 }

@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanDeactivate,
+  Router,
+  RouterStateSnapshot,
+  UrlTree
+} from '@angular/router';
 import {Observable} from 'rxjs';
 import {SettingsServiceProvider} from '../../providers/settings-service.provider';
 
@@ -8,6 +15,6 @@ export class SmartphoneInitializedGuard implements CanActivate {
   constructor (private settings: SettingsServiceProvider, private router: Router) { }
 
   canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.settings.instance.isFirstRunDone || this.router.parseUrl ('/first-run');
+    return this.settings.instance.isFirstRunDone || this.router.parseUrl ('/mobile/first-run');
   }
 }

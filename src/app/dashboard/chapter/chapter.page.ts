@@ -22,7 +22,7 @@ export class ChapterPage implements ViewDidEnter {
   constructor (
     private seriesService: SeriesService,
     private activatedRoute: ActivatedRoute,
-    private api: AuthenticatedApiService
+    public api: AuthenticatedApiService
   ) {
     this.readMode = localStorage.getItem ('readmode');
 

@@ -11,10 +11,10 @@ import {Observable} from 'rxjs';
 import {SettingsServiceProvider} from '../../providers/settings-service.provider';
 
 @Injectable({providedIn: 'root'})
-export class SmartphoneNotInitializedGuard implements CanActivate {
+export class IsNotSmartphoneGuard implements CanActivate {
   constructor (private settings: SettingsServiceProvider, private router: Router) { }
 
   canActivate (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return !this.settings.instance.isFirstRunDone || this.router.parseUrl ('/mobile/home');
+    return !this.settings.instance.isMobile || this.router.parseUrl ('/');
   }
 }

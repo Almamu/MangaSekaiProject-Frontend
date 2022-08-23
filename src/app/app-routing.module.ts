@@ -9,7 +9,12 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import ('./common/common.module').then (m => m.CommonModule)
+    pathMatch: 'full',
+    redirectTo: 'mobile/home'
+  },
+  {
+    path: 'mobile',
+    loadChildren: () => import ('./smartphone/smartphone.module').then (m => m.SmartphoneModule)
   }
 ];
 

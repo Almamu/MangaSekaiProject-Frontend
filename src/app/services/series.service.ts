@@ -3,15 +3,15 @@ import {HttpClient} from '@angular/common/http';
 import {ApiService} from '../network/services/api.service';
 import {SeriesModel} from '../models/series.model';
 import {Observable} from 'rxjs';
-import {ChapterTrackModel} from "../models/chaptertrack.model";
-import {ChapterModel} from "../models/chapter.model";
-import {PagesModel} from "../models/pages.model";
+import {ChapterModel} from '../models/chapter.model';
+import {PagesModel} from '../models/pages.model';
+import {InstanceApiService} from '../network/services/instance-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeriesService {
-  constructor (private http: HttpClient, private api: ApiService) {
+  constructor (private http: HttpClient, private api: InstanceApiService) {
 
   }
 

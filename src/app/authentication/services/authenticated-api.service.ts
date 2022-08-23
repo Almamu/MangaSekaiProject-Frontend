@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from '../../network/services/api.service';
 import {AuthenticationService} from './authentication.service';
+import {InstanceApiService} from '../../network/services/instance-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import {AuthenticationService} from './authentication.service';
 export class AuthenticatedApiService {
   constructor (
     private auth: AuthenticationService,
-    private apiService: ApiService
+    private apiService: InstanceApiService
   ) { }
 
   api (endpoint: string) {

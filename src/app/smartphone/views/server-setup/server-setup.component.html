@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Server setup</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [scrollEvents]="true">
+  <form [formGroup]="form" (ngSubmit)="addServer ()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Server address <small>(https://...)</small></ion-label>
+        <ion-input formControlName="address"></ion-input>
+      </ion-item>
+      <span class="error ion-padding" *ngIf="address.invalid && address.touched && address.errors.required">
+        Server address is required
+      </span>
+      <ion-item>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input formControlName="username"></ion-input>
+      </ion-item>
+      <span class="error ion-padding" *ngIf="username.invalid && username.touched && username.errors.required">
+        Username is required
+      </span>
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <span class="error ion-padding" *ngIf="password.invalid && password.touched && password.errors.required">
+        Password is required
+      </span>
+      <ion-item>
+        <ion-label position="stacked">Alias (optional)</ion-label>
+        <ion-input formControlName="alias"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" expand="block">Add server</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

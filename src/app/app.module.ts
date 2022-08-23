@@ -1,4 +1,4 @@
-import {Injector, NgModule} from '@angular/core';
+import {APP_INITIALIZER, Injector, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
@@ -11,9 +11,13 @@ import {NetworkModule} from './network/network.module';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {AuthenticationModule} from './authentication/authentication.module';
-import {SettingsService} from './services/settings.service';
-import {SqlSettingsService} from './services/sql-settings.service';
-import {WebSettingsService} from './services/web-settings.service';
+import {SwiperModule} from 'swiper/angular';
+import {ReactiveFormsModule} from '@angular/forms';
+import {SettingsServiceProvider} from "./providers/settings-service.provider";
+import {AuthenticationService} from "./authentication/services/authentication.service";
+import {SqlSettingsService} from "./services/sql-settings.service";
+import {SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
+import {SQLitePorter} from "@awesome-cordova-plugins/sqlite-porter/ngx";
 
 // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function createTranslateLoader (http: HttpClient) {
@@ -30,6 +34,8 @@ export function createTranslateLoader (http: HttpClient) {
     AppRoutingModule,
     NetworkModule,
     AuthenticationModule,
+    ReactiveFormsModule,
+    SwiperModule,
     TranslateModule.forRoot({
       defaultLanguage: 'en',
       loader: {
@@ -39,7 +45,22 @@ export function createTranslateLoader (http: HttpClient) {
       }
     })
   ],
-  providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy}],
+  providers: [
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (platform: Platform, settings: SettingsServiceProvider, auth: AuthenticationService) =>
+        () => platform.ready ().then (async () => {
+          if (platform.is('hybrid') === true) {
+            const instance = new SqlSettingsService(platform, new SQLite(), new SQLitePorter(), auth);
+            await instance.initialize();
+            settings.instance = instance;
+          }
+        }),
+      deps: [Platform, SettingsServiceProvider, AuthenticationService],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
