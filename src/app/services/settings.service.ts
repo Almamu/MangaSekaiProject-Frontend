@@ -6,7 +6,7 @@ export enum Settings {
 }
 
 export abstract class SettingsService {
-  protected settings: Record<string, any> = {};
+  public settings: Record<string, any> = {};
 
   abstract get isMobile(): boolean;
 

@@ -1,15 +1,16 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {SettingsServiceProvider} from '../../../providers/settings-service.provider';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../../authentication/services/authentication.service';
 import {AlertController, LoadingController} from '@ionic/angular';
 import {Router} from '@angular/router';
+import {SplashScreen} from "@capacitor/splash-screen";
 
 @Component({
   selector: 'app-server-setup',
   templateUrl: './server-setup.component.html'
 })
-export class ServerSetupComponent {
+export class ServerSetupComponent implements AfterViewInit {
   form: FormGroup;
 
   constructor (
@@ -32,6 +33,10 @@ export class ServerSetupComponent {
       password: ['', Validators.required],
       alias: ['']
     });
+  }
+
+  ngAfterViewInit (): void {
+    SplashScreen.hide ();
   }
 
   get address () {

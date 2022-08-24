@@ -1,15 +1,16 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {AuthenticationService} from '../../../authentication/services/authentication.service';
 import {ServerModel} from '../../../models/server.model';
 import {SettingsServiceProvider} from '../../../providers/settings-service.provider';
 import {SessionModel} from '../../../authentication/models/session.model';
 import {Router} from '@angular/router';
+import {SplashScreen} from '@capacitor/splash-screen';
 
 @Component({
   selector: 'app-smartphone-base',
   templateUrl: './base.component.html'
 })
-export class BaseComponent {
+export class BaseComponent implements AfterViewInit {
   server: ServerModel;
   serverList: ServerModel [];
   token: SessionModel;
@@ -22,6 +23,10 @@ export class BaseComponent {
     this.server = this.auth.selectedServer;
     this.serverList = this.settings.instance.serverList;
     this.token = this.auth.session;
+  }
+
+  ngAfterViewInit (): void {
+    SplashScreen.hide ();
   }
 
   switchToServer (server: ServerModel): void {
@@ -52,5 +57,13 @@ export class BaseComponent {
 
   addServer (): void {
     this.router.navigate (['/mobile/server-setup']);
+  }
+
+  gotoDashboard (): void {
+    this.router.navigate (['/mobile/home'], {replaceUrl: true});
+  }
+
+  gotoSettings (): void {
+    this.router.navigate (['/mobile/settings'], {replaceUrl: true});
   }
 }

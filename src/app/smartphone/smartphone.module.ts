@@ -1,6 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {IonicModule, Platform} from '@ionic/angular';
+import {IonicModule} from '@ionic/angular';
 import {TranslateModule} from '@ngx-translate/core';
 import {ComponentsModule} from '../components/components.module';
 import {NgModule} from '@angular/core';
@@ -9,14 +9,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {FirstRunComponent} from './views/first-run/first-run.component';
 import {SmartphoneInitializedGuard} from './guards/smartphone-initialized.guard';
 import {SmartphoneNotInitializedGuard} from './guards/smartphone-not-initialized.guard';
-import {SettingsServiceProvider} from '../providers/settings-service.provider';
-import {SqlSettingsService} from '../services/sql-settings.service';
-import {SQLitePorter} from '@awesome-cordova-plugins/sqlite-porter/ngx';
-import {SQLite} from '@awesome-cordova-plugins/sqlite/ngx';
 import {SwiperModule} from 'swiper/angular';
 import {ServerSetupComponent} from './views/server-setup/server-setup.component';
 import {IsSmartphoneGuard} from './guards/is-smartphone.guard';
-import {AuthenticationService} from '../authentication/services/authentication.service';
 import {AnyServerGuard} from './guards/any-server.guard';
 
 const routes: Routes = [
@@ -28,7 +23,11 @@ const routes: Routes = [
       {
         path: 'home',
         loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardPageModule)
-      }
+      },
+      {
+        path: 'settings',
+        loadChildren: () => import ('../settings/settings.module').then (m => m.SettingsPageModule)
+      },
     ]
   },
   {

@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="confirm ()">Save</ion-button>
+    </ion-buttons>
+    <ion-title>{{ 'SETTINGS.USERS.EDIT' | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel ()">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form>
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Username</ion-label>
+        <ion-input [(ngModel)]="username" name="username" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">New password</ion-label>
+        <ion-input [(ngModel)]="password" name="password" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Confirm new password</ion-label>
+        <ion-input [(ngModel)]="confirmPassword" name="confirmPassword" required></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

@@ -93,65 +93,38 @@ export class SqlSettingsService extends SettingsService {
       'INSERT OR IGNORE INTO "main"."settings"("name","value") VALUES ("first-run-completed", "false");' +
       'CREATE TABLE IF NOT EXISTS "servers" ("address" TEXT NOT NULL, "token" TEXT NOT NULL, "alias" TEXT NOT NULL, "selected" NUMERIC NOT NULL DEFAULT 0, PRIMARY KEY("address"));';
 
-    await this.platform.ready ().then (() => {
-      this.sqlite.create ({
-        name: 'data.db',
-        location: 'default'
-      })
-      .then (async db => {
-        this.db = db;
-
-        await this.sqlitePorter.importSqlToDb (this.db, sql)
-          .then (async () => {
-            // load all the settings
-            await this.db.executeSql('SELECT * FROM settings', [])
-              .then(res => {
-                // cleanup stored settings just in case
-                this.settings = {};
-                // parse all the values
-                for (let i = 0; i < res.rows.length; i++) {
-                  // store the value in memory
-                  this.settings [res.rows.item(i).name] = JSON.parse(res.rows.item(i).value);
-                }
-
-                console.dir('SETTINGS LOADED: ');
-                console.dir(this.settings);
-              })
-              .catch(e => {
-              });
-            await this.db.executeSql('SELECT * FROM servers', [])
-              .then(res => {
-                // cleanup stored server list
-                this.servers = [];
-                // parse all the servers
-                for (let i = 0; i < res.rows.length; i++) {
-                  const server = {
-                    address: res.rows.item(i).address,
-                    token: res.rows.item(i).token,
-                    alias: res.rows.item(i).alias,
-                    selected: res.rows.item(i).selected === 1
-                  };
-                  // add the server to the list
-                  this.servers.push(server);
-                  // if the server is marked as selected store it in the authorizationservice too
-                  this.auth.selectedServer = server;
-                }
-
-                console.dir('SERVERS LOADED: ');
-                console.dir(this.servers);
-
-              })
-              .catch(e => {
-                // TODO: HANDLE ERROR; THIS IS A MUST
-              });
-          })
-          .catch (e => {
-            // TODO: HANDLE ERROR; THIS IS A MUST
-          });
-      })
-      .catch (err => {
-        // TODO: HANDLE ERROR; THIS IS A MUST
-      });
+    await this.platform.ready ();
+    this.db = await this.sqlite.create ({
+      name: 'data.db',
+      location: 'default'
     });
+
+    await this.sqlitePorter.importSqlToDb (this.db, sql);
+    // load all the settings
+    const settingsDb = await this.db.executeSql('SELECT * FROM settings', []);
+    // cleanup stored settings just in case
+    this.settings = {};
+    // parse all the values
+    for (let i = 0; i < settingsDb.rows.length; i++) {
+      // store the value in memory
+      this.settings [settingsDb.rows.item(i).name] = JSON.parse(settingsDb.rows.item(i).value);
+    }
+
+    const serversDb = await this.db.executeSql('SELECT * FROM servers', []);
+    // cleanup stored server list
+    this.servers = [];
+    // parse all the servers
+    for (let i = 0; i < serversDb.rows.length; i++) {
+      const server = {
+        address: serversDb.rows.item(i).address,
+        token: serversDb.rows.item(i).token,
+        alias: serversDb.rows.item(i).alias,
+        selected: serversDb.rows.item(i).selected === 1
+      };
+      // add the server to the list
+      this.servers.push(server);
+      // if the server is marked as selected store it in the authorizationservice too
+      this.auth.selectedServer = server;
+    }
   }
 }

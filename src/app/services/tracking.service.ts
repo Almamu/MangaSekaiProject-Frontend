@@ -1,4 +1,3 @@
-import {ApiService} from '../network/services/api.service';
 import {HttpClient} from '@angular/common/http';
 import {SeriesTrackModel} from '../models/seriestrack.model';
 import {Observable} from 'rxjs';

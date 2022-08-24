@@ -11,9 +11,7 @@ import {InstanceApiService} from '../network/services/instance-api.service';
   providedIn: 'root'
 })
 export class SeriesService {
-  constructor (private http: HttpClient, private api: InstanceApiService) {
-
-  }
+  constructor (private http: HttpClient, private api: InstanceApiService) { }
 
   getDiscover (): Observable<SeriesModel[]> {
     const url = this.api.api ('series');

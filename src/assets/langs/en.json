@@ -22,5 +22,23 @@
   },
   "CHAPTER": {
     "TITLE": "{{ name }} - Chapter {{ chapter }}"
+  },
+  "SETTINGS": {
+    "TITLE": "Server settings <small>{{ name }}</small>",
+    "FOLDERS": {
+      "TITLE": "Library settings",
+      "DESCRIPTION": "Here you can specify the folders to be used by the scanner to find and display your local manga collection. The changes won't take effect until the library is refreshed from the Dashboard",
+      "ADD": "Add folder",
+      "EMPTY": "Click \"Add folder\" to begin the process"
+    },
+    "USERS": {
+      "TITLE": "Users",
+      "DESCRIPTION": "<p>These users will be able to access the system and read manga, keep track of their series, etc...</p> <p>You can make any user and administrator enabling the \"hammer\" to the right. Administrators can manage libraries, update them and manage users...</p>",
+      "ADD": "Add user",
+      "EDIT": "Modify user"
+    }
+  },
+  "GENERAL": {
+    "LOADING": "Loading..."
   }
 }
