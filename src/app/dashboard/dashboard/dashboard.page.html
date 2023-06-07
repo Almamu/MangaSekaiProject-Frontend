@@ -16,7 +16,7 @@
             {{ 'DASHBOARD.CONTINUE' | translate }}
           </ion-label>
         </ion-item>
-        <app-manga-cover *ngFor="let status of tracking.data" [manga]="status.Series" [href]="'/dashboard/series/' + status.IdSeries + '/chapter/' + status.Chapter.Id" [subtitle]="(status.ChapterTrack.Page === 0 ? 'MANGA.CHAPTER_TRACK' : 'MANGA.CHAPTER_TRACK_COUNT') | translate:{chapter: status.Chapter.Number, page: status.ChapterTrack.Page}"></app-manga-cover>
+        <app-manga-cover *ngFor="let status of tracking.data" [manga]="status.Series" [href]="chapterPath (status.IdSeries, status.Chapter.Id)" [subtitle]="(status.ChapterTrack.Page === 0 ? 'MANGA.CHAPTER_TRACK' : 'MANGA.CHAPTER_TRACK_COUNT') | translate:{chapter: status.Chapter.Number, page: status.ChapterTrack.Page}"></app-manga-cover>
         <div class="message" *ngIf="tracking.error">
           <ion-icon name="cloud-offline-outline"></ion-icon>
           <h2>Could not connect to the server</h2>
@@ -34,7 +34,7 @@
             {{ 'DASHBOARD.DISCOVER' | translate }}
           </ion-label>
         </ion-item>
-        <app-manga-cover *ngFor="let manga of series.data" [manga]="manga" [href]="'/dashboard/series/' + manga.Id" [subtitle]="'MANGA.CHAPTER_COUNT' | translate:{count: manga.ChapterCount}"></app-manga-cover>
+        <app-manga-cover *ngFor="let manga of series.data" [manga]="manga" [href]="seriesPath (manga.Id)" [subtitle]="'MANGA.CHAPTER_COUNT' | translate:{count: manga.ChapterCount}"></app-manga-cover>
         <div class="message" *ngIf="series.data && series.data.length === 0">
           <ion-icon name="information-outline"></ion-icon>
           There's no manga available

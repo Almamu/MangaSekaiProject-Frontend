@@ -8,10 +8,11 @@ import {FormsModule} from '@angular/forms';
 import {IonicModule} from '@ionic/angular';
 import {TranslateModule} from '@ngx-translate/core';
 import {IsNotSmartphoneGuard} from '../smartphone/guards/is-not-smartphone.guard';
+import {AppRoutes} from '../services/routing.service';
 
 export const routes: Routes = [
   {
-    path: 'login',
+    path: AppRoutes.login,
     component: LoginComponent,
     canActivate: [IsNotSmartphoneGuard]
   }

@@ -5,6 +5,7 @@ import {SeriesModel} from '../../models/series.model';
 import {SeriesTrackModel} from '../../models/seriestrack.model';
 import {TrackingService} from '../../services/tracking.service';
 import {LoaderModel} from '../../models/loader.model';
+import RoutingService, {AppRoutes} from '../../services/routing.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,10 @@ export class DashboardPage implements ViewDidEnter {
   series: LoaderModel <SeriesModel []> = new LoaderModel<SeriesModel[]>();
   tracking: LoaderModel <SeriesTrackModel[]> = new LoaderModel<SeriesTrackModel[]>();
 
-  constructor (private seriesService: SeriesService, private trackingService: TrackingService) { }
+  constructor (
+    private seriesService: SeriesService,
+    private trackingService: TrackingService,
+    private routing: RoutingService) { }
 
   ionViewDidEnter () {
     this.seriesService.getDiscover ().subscribe (result => {
@@ -32,6 +36,14 @@ export class DashboardPage implements ViewDidEnter {
       this.tracking.error = true;
       this.tracking.loading = false;
     });
+  }
+
+  seriesPath (id: number): string {
+    return this.routing.seriesPath(id);
+  }
+
+  chapterPath (mangaId: number, chapterId: number): string {
+    return this.routing.chapterPath (mangaId, chapterId);
   }
 
 }

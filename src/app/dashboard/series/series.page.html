@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start" defaultHref="dashboard"></ion-back-button>
+    <ion-back-button slot="start" [defaultHref]="backPath ()"></ion-back-button>
     <ion-title *ngIf="serie">{{ 'SERIES.TITLE' | translate:{name:serie.Name} }}</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -39,7 +39,7 @@
     <ion-row *ngIf="chapters">
       <ion-col>
         <app-cover-container>
-          <app-chapter-cover *ngFor="let chapter of chapters" [manga]="serie" [href]="'/dashboard/series/' + serie.Id + '/chapter/' + chapter.Id" [title]="'SERIES.CHAPTER_NUMBER' | translate:{number: chapter.Number}"></app-chapter-cover>
+          <app-chapter-cover *ngFor="let chapter of chapters" [manga]="serie" [href]="chapterPath (serie.Id, chapter.Id)" [title]="'SERIES.CHAPTER_NUMBER' | translate:{number: chapter.Number}"></app-chapter-cover>
         </app-cover-container>
       </ion-col>
     </ion-row>

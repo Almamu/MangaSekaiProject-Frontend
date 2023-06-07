@@ -6,14 +6,8 @@ import {SeriesModel} from '../../models/series.model';
   templateUrl: './manga-cover.component.html',
   styleUrls: ['./manga-cover.component.scss'],
 })
-export class MangaCoverComponent implements OnInit {
-
+export class MangaCoverComponent {
   @Input() manga: SeriesModel;
   @Input() subtitle: string;
   @Input() href: string;
-
-  constructor () { }
-
-  ngOnInit () {}
-
 }

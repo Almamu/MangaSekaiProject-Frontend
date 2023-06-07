@@ -13,6 +13,7 @@ import {SwiperModule} from 'swiper/angular';
 import {ServerSetupComponent} from './views/server-setup/server-setup.component';
 import {IsSmartphoneGuard} from './guards/is-smartphone.guard';
 import {AnyServerGuard} from './guards/any-server.guard';
+import {AppRoutes} from '../services/routing.service';
 
 const routes: Routes = [
   {
@@ -21,22 +22,22 @@ const routes: Routes = [
     canActivate: [IsSmartphoneGuard, SmartphoneInitializedGuard, AnyServerGuard],
     children: [
       {
-        path: 'home',
+        path: AppRoutes.home,
         loadChildren: () => import('../dashboard/dashboard.module').then(m => m.DashboardPageModule)
       },
       {
-        path: 'settings',
+        path: AppRoutes.settings,
         loadChildren: () => import ('../settings/settings.module').then (m => m.SettingsPageModule)
       },
     ]
   },
   {
-    path: 'first-run',
+    path: AppRoutes.firstRun,
     component: FirstRunComponent,
     canActivate: [SmartphoneNotInitializedGuard]
   },
   {
-    path: 'server-setup',
+    path: AppRoutes.serverSetup,
     component: ServerSetupComponent,
     canActivate: [SmartphoneInitializedGuard],
   },

@@ -11,7 +11,6 @@ import {ComponentsModule} from '../components/components.module';
 import {SeriesPage} from './series/series.page';
 import {ChapterPage} from './chapter/chapter.page';
 import {AuthenticationGuard} from '../authentication/guards/authentication-guard.service';
-import {SmartphoneInitializedGuard} from '../smartphone/guards/smartphone-initialized.guard';
 
 const routes: Routes = [
   {

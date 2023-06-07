@@ -73,7 +73,7 @@ export class SqlSettingsService extends SettingsService {
 
   removeServer (server: ServerModel): void {
     // filter the array and remove the addresses that match
-    this.servers = this.servers.filter (x => x.address !== server.address);
+    this.servers = this.servers.filter (x => x !== server);
 
     if (this.servers.length > 0)
       // if selected server is the same we are removing, switch to a different one
