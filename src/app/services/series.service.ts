@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ApiService} from '../network/services/api.service';
 import {SeriesModel} from '../models/series.model';
 import {Observable} from 'rxjs';
 import {ChapterModel} from '../models/chapter.model';
 import {PagesModel} from '../models/pages.model';
-import {InstanceApiService} from '../network/services/instance-api.service';
+import {InstanceApiService} from '../modules/network/services/instance-api.service';
 
 @Injectable({
   providedIn: 'root'

@@ -2,7 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {SeriesTrackModel} from '../models/seriestrack.model';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {InstanceApiService} from '../network/services/instance-api.service';
+import {InstanceApiService} from '../modules/network/services/instance-api.service';
 
 @Injectable({
   providedIn: 'root'

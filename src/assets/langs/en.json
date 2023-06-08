@@ -13,7 +13,9 @@
     "TITLE": "Please sign in",
     "USERNAME": "Username",
     "PASSWORD": "Password",
-    "SIGNIN": "Sign in"
+    "SIGNIN": "Sign in",
+    "URL_PLACEHOLDER": "http://your-server.com",
+    "URL": "Server address"
   },
   "MANGA": {
     "CHAPTER_COUNT": "{{ count }} chapter(s)",

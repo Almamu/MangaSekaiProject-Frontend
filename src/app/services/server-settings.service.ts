@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {InstanceApiService} from '../network/services/instance-api.service';
+import {InstanceApiService} from '../modules/network/services/instance-api.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {ServerSettingModel} from '../models/server-setting.model';

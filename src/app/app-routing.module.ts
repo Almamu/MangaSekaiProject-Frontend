@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import {routes as AuthRoutes} from './authentication/authentication.module';
 import {AppRoutes} from './services/routing.service';
+import RedirectComponent from './components/redirect/redirect.component';
 
 const routes: Routes = [
   {
-    path: AppRoutes.authBase,
-    children: AuthRoutes
-  },
-  {
     path: '',
     pathMatch: 'full',
-    redirectTo: AppRoutes.mobileHome
+    component: RedirectComponent
   },
   {
-    path: AppRoutes.mobileBase,
-    loadChildren: () => import ('./smartphone/smartphone.module').then (m => m.SmartphoneModule)
+    path: AppRoutes.mobile,
+    loadChildren: () => import ('./modules/smartphone/smartphone.module').then (m => m.SmartphoneModule)
+  },
+  {
+    path: AppRoutes.webBase,
+    loadChildren: () => import ('./modules/web/web.module').then (m => m.WebModule)
   }
 ];
 

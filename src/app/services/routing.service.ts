@@ -2,13 +2,14 @@ import {Injectable} from '@angular/core';
 import {SettingsServiceProvider} from '../providers/settings-service.provider';
 
 export enum AppRoutes {
-  mobileBase = 'mobile',
-  mobileHome = 'mobile/home',
+  webBase = 'web',
+  mobile = 'mobile',
   home = 'home',
   settings = 'settings',
   series = 'series',
-  authBase = 'auth',
+  auth = 'auth',
   login = 'login',
+  logout = 'logout',
   firstRun = 'first-run',
   serverSetup = 'server-setup',
   chapter = 'chapter'
@@ -32,10 +33,30 @@ export default class RoutingService {
     return this.build (AppRoutes.home, AppRoutes.series, mangaId, AppRoutes.chapter, chapterId);
   }
 
+  loginPath (): string {
+    return this.build (AppRoutes.auth, AppRoutes.login);
+  }
+
+  logoutPath (): string {
+    return this.build (AppRoutes.auth, AppRoutes.logout);
+  }
+
+  firstRunPath (): string {
+    return this.build (AppRoutes.firstRun);
+  }
+
+  serverSetupPath (): string {
+    return this.build (AppRoutes.serverSetup);
+  }
+
+  settingsPath (): string {
+    return this.build (AppRoutes.settings);
+  }
+
   private build (...parameters: any[]): string {
     if (this.settings.instance.isMobile)
-      return `/${AppRoutes.mobileBase}/${parameters.join('/')}`;
+      return `/${AppRoutes.mobile}/${parameters.join('/')}`;
     else
-      return `${parameters.join('/')}`;
+      return `/${AppRoutes.webBase}/${parameters.join('/')}`;
   }
 }

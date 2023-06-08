@@ -7,7 +7,7 @@ import {concat, forkJoin, Observable} from 'rxjs';
 import {SettingsService} from './settings.service';
 import {ServerModel} from '../models/server.model';
 import {fromPromise} from 'rxjs/internal-compatibility';
-import {AuthenticationService} from '../authentication/services/authentication.service';
+import {AuthenticationService} from '../modules/authentication/services/authentication.service';
 
 @Injectable({
   providedIn: 'root'

@@ -1,0 +1,43 @@
+<ion-split-pane when="md" contentId="main">
+  <ion-menu side="start" contentId="main">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>MANGASEKAI</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-list-header>Main</ion-list-header>
+        <ion-item button (click)="gotoDashboard ()">
+          <ion-icon slot="start" name="speedometer-outline"></ion-icon>
+          <ion-label>Dashboard</ion-label>
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+        </ion-item>
+      </ion-list>
+      <ion-list *ngIf="isAdmin">
+        <ion-list-header >Admin</ion-list-header>
+        <ion-item button (click)="gotoSettings ()">
+          <ion-icon slot="start" name="settings-outline"></ion-icon>
+          <ion-label>Settings</ion-label>
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>Account</ion-list-header>
+        <ion-item button>
+          <ion-icon slot="start" name="person-outline"></ion-icon>
+          <ion-label>User settings</ion-label>
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+        </ion-item>
+        <ion-item button (click)="logout()">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          <ion-label>Logout</ion-label>
+          <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <!-- the main content -->
+  <ion-router-outlet id="main"></ion-router-outlet>
+</ion-split-pane>

@@ -7,17 +7,18 @@ import {IonicModule, IonicRouteStrategy, Platform} from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {NetworkModule} from './network/network.module';
+import {NetworkModule} from './modules/network/network.module';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {AuthenticationModule} from './authentication/authentication.module';
+import {AuthenticationModule} from './modules/authentication/authentication.module';
 import {SwiperModule} from 'swiper/angular';
 import {ReactiveFormsModule} from '@angular/forms';
-import {SettingsServiceProvider} from "./providers/settings-service.provider";
-import {AuthenticationService} from "./authentication/services/authentication.service";
-import {SqlSettingsService} from "./services/sql-settings.service";
-import {SQLite} from "@awesome-cordova-plugins/sqlite/ngx";
-import {SQLitePorter} from "@awesome-cordova-plugins/sqlite-porter/ngx";
+import {SettingsServiceProvider} from './providers/settings-service.provider';
+import {AuthenticationService} from './modules/authentication/services/authentication.service';
+import {SqlSettingsService} from './services/sql-settings.service';
+import {SQLite} from '@awesome-cordova-plugins/sqlite/ngx';
+import {SQLitePorter} from '@awesome-cordova-plugins/sqlite-porter/ngx';
+import RedirectComponent from './components/redirect/redirect.component';
 
 // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
 export function createTranslateLoader (http: HttpClient) {
@@ -25,8 +26,7 @@ export function createTranslateLoader (http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, RedirectComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
