@@ -7,7 +7,6 @@ import {NgModule} from '@angular/core';
 import {BaseComponent} from './views/base/base.component';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutes} from '../../services/routing.service';
-import {IsNotSmartphoneGuard} from './guards/is-not-smartphone.guard';
 import {AuthenticationGuard} from '../authentication/guards/authentication-guard.service';
 import {routes as AuthRoutes} from '../authentication/authentication.module';
 
@@ -15,7 +14,7 @@ const routes: Routes = [
   {
     path: '',
     component: BaseComponent,
-    canActivate: [IsNotSmartphoneGuard, AuthenticationGuard],
+    canActivate: [AuthenticationGuard],
     children: [
       {
         path: AppRoutes.home,

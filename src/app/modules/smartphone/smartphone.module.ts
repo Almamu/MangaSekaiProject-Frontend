@@ -19,7 +19,7 @@ const routes: Routes = [
   {
     path: '',
     component: BaseComponent,
-    canActivate: [IsSmartphoneGuard, SmartphoneInitializedGuard, AnyServerGuard],
+    canActivate: [SmartphoneInitializedGuard, AnyServerGuard],
     children: [
       {
         path: AppRoutes.home,
