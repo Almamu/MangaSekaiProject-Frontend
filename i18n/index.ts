@@ -14,6 +14,7 @@ export type Translations = {
       scanQR: string;
       manual: string;
       continue: string;
+      back: string;
       server: {
         address: string;
         username: string;

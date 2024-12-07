@@ -3,69 +3,76 @@ import { t } from "@/i18n";
 import { Icon } from "@/components/ui/Icon";
 import { VerticalLayout } from "@/components/ui/View";
 import { ButtonPrimary } from "@/components/ui/Buttons";
-import { Control, FieldErrors, FieldValues, Path } from "react-hook-form";
-import { createContext, ReactNode, useContext, useState } from "react";
-import { Pressable } from "react-native";
+import { useState } from "react";
+import { Platform } from "react-native";
+import { z } from "zod";
+import { useZodForm } from "@/hooks/useZodForm";
 
-interface Props<T extends FieldValues> {
+interface Props {
   setInfoModalVisible: (visible: boolean) => void;
-  pingServer: () => void;
-  control: Control<T>;
-  address: Path<T>;
-  username: Path<T>;
-  password: Path<T>;
-  errors: FieldErrors<T>;
+  pingServer: (form: ServerFormType) => Promise<void>;
 }
 
-interface ContextProps {
-  setBeforeElement: (node?: ReactNode) => void;
-}
+export const ServerFormValidation = z.object({
+  address: z.string().url(),
+  username: z.string().min(1),
+  password: z.string().min(1),
+});
 
-export const ServerFormContext = createContext<ContextProps>(
-  {} as ContextProps
-);
+export type ServerFormType = z.infer<typeof ServerFormValidation>;
 
-export function ServerForm<T extends FieldValues>({
-  address,
-  username,
-  password,
-  control,
-  errors,
-  pingServer,
-  setInfoModalVisible,
-}: Props<T>) {
-  const [step, setStep] = useState(1);
-  const context = useServerFormContext();
-  const element = (
-    <Pressable onPress={() => gotoFirstStep()}>
-      <Icon icon="arrow-left" />
-    </Pressable>
-  );
-  const gotoSecondStep = () => {
-    context.setBeforeElement(element);
-    setStep(2);
-  };
-  const gotoFirstStep = () => {
-    context.setBeforeElement();
-    setStep(1);
-  };
+export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
+  const [step, setStep] = useState(Platform.select({ default: 0, web: 1 }));
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useZodForm<ServerFormType>(ServerFormValidation, {
+    address: "",
+    username: "admin",
+    password: "password",
+  });
 
-  if (step === 1) {
+  if (step === 0) {
+    return (
+      <VerticalLayout>
+        <ButtonPrimary
+          onClick={() => {
+            setStep(1);
+          }}
+        >
+          {t("install.step1.manual")}
+        </ButtonPrimary>
+
+        <ButtonPrimary href="/">{t("install.step1.scanQR")}</ButtonPrimary>
+      </VerticalLayout>
+    );
+  } else if (step === 1) {
     return (
       <VerticalLayout>
         <TextInput
+          textContentType={"URL"}
           placeholder={t("install.step1.server.address")}
           append={<Icon icon="info-circle" />}
           appendPress={() => setInfoModalVisible(true)}
           control={control}
-          name={address}
+          name={"address"}
         />
         <ButtonPrimary
-          onClick={() => !errors[address] && gotoSecondStep()}
+          onClick={() => !errors.address && setStep(2)}
           append={<Icon icon={"arrow-right"} />}
         >
           {t("install.step1.continue")}
         </ButtonPrimary>
+        {Platform.OS !== "web" && (
+          <ButtonPrimary
+            muted
+            onClick={() => setStep(0)}
+            prepend={<Icon icon="arrow-left" />}
+          >
+            {t("install.step1.back")}
+          </ButtonPrimary>
+        )}
       </VerticalLayout>
     );
   } else if (step === 2) {
@@ -74,28 +81,29 @@ export function ServerForm<T extends FieldValues>({
         <TextInput
           textContentType="username"
           placeholder={t("install.step1.server.username")}
-          append={<Icon icon="info-circle" />}
-          appendPress={() => setInfoModalVisible(true)}
           control={control}
-          name={username}
+          name={"username"}
         />
         <TextInput
           textContentType="password"
           placeholder={t("install.step1.server.password")}
-          append={<Icon icon="info-circle" />}
-          appendPress={() => setInfoModalVisible(true)}
           control={control}
-          name={password}
+          name={"password"}
         />
         <ButtonPrimary
-          onClick={pingServer}
+          onClick={() => handleSubmit(pingServer)}
           append={<Icon icon={"arrow-right"} />}
         >
           {t("install.step1.continue")}
+        </ButtonPrimary>
+        <ButtonPrimary
+          muted
+          onClick={() => setStep(1)}
+          prepend={<Icon icon="arrow-left" />}
+        >
+          {t("install.step1.back")}
         </ButtonPrimary>
       </VerticalLayout>
     );
   }
 }
-
-export const useServerFormContext = () => useContext(ServerFormContext);

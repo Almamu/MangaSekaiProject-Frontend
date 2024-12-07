@@ -7,6 +7,7 @@ export const translation: Translations = {
       scanQR: "Scan QR Code",
       manual: "Enter manually",
       continue: "Next",
+      back: "Back",
       server: {
         address: "Server Address",
         username: "Username",

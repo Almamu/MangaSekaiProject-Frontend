@@ -15,6 +15,8 @@ import React from "react";
 export type TextInputProps = {
   style?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
+  prependStyle?: StyleProp<TextStyle>;
+  appendStyle?: StyleProp<ViewStyle>;
   append?: React.ReactNode;
   prepend?: React.ReactNode;
   prependPress?: () => void;
@@ -24,6 +26,8 @@ export type TextInputProps = {
 export function TextInput({
   style,
   inputStyle,
+  prependStyle,
+  appendStyle,
   append,
   prepend,
   appendPress,
@@ -31,10 +35,6 @@ export function TextInput({
   ...props
 }: TextInputProps) {
   const { colors } = useTheme();
-  const appendStyles = StyleSheet.flatten([
-    styles.append,
-    { backgroundColor: colors.primary },
-  ]);
 
   return (
     <View
@@ -45,7 +45,14 @@ export function TextInput({
       ])}
     >
       {prepend && (
-        <Pressable onPress={prependPress} style={appendStyles}>
+        <Pressable
+          onPress={prependPress}
+          style={StyleSheet.flatten([
+            styles.append,
+            { backgroundColor: colors.primary },
+            prependStyle,
+          ])}
+        >
           {prepend}
         </Pressable>
       )}
@@ -55,7 +62,14 @@ export function TextInput({
         {...props}
       ></RNTextInput>
       {append && (
-        <Pressable onPress={appendPress} style={appendStyles}>
+        <Pressable
+          onPress={appendPress}
+          style={StyleSheet.flatten([
+            styles.append,
+            { backgroundColor: colors.primary },
+            appendStyle,
+          ])}
+        >
           {append}
         </Pressable>
       )}

@@ -3,6 +3,7 @@ import {
   TextInput as BaseTextInput,
   TextInputProps,
 } from "@/components/ui/Input/Base/TextInput";
+import { useTheme } from "@react-navigation/native";
 
 type Props<T extends FieldValues> = TextInputProps & {
   name: Path<T>;
@@ -14,13 +15,19 @@ export const TextInput = <T extends FieldValues>({
   control,
   ...props
 }: Props<T>) => {
-  const { field, fieldState: _fieldState } = useController({
+  const { colors } = useTheme();
+  const { field, fieldState: fieldState } = useController({
     control,
     name,
   });
+  const errorStyle = { borderColor: colors.error };
+  const appendStyle = { backgroundColor: colors.error };
 
   return (
     <BaseTextInput
+      style={fieldState.invalid ? errorStyle : {}}
+      appendStyle={fieldState.invalid ? appendStyle : {}}
+      prependStyle={fieldState.invalid ? appendStyle : {}}
       onChange={field.onChange}
       onBlur={field.onBlur}
       editable={!field.disabled}

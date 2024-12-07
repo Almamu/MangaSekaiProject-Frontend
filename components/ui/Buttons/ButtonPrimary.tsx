@@ -2,7 +2,9 @@ import { Button, ButtonProps } from "./Button";
 import { useTheme } from "@react-navigation/native";
 import { Fonts } from "@/themes/fonts";
 
-export function ButtonPrimary({ children, ...props }: ButtonProps) {
+type Props = ButtonProps & { muted?: boolean };
+
+export function ButtonPrimary({ muted, ...props }: Props) {
   const data = useTheme();
 
   return (
@@ -11,7 +13,7 @@ export function ButtonPrimary({ children, ...props }: ButtonProps) {
       style={[
         props.style,
         {
-          backgroundColor: data.colors.primary,
+          backgroundColor: muted ? "transparent" : data.colors.primary,
           borderWidth: 2,
           borderStyle: "solid",
           borderColor: data.colors.primary,
@@ -25,8 +27,6 @@ export function ButtonPrimary({ children, ...props }: ButtonProps) {
           fontSize: 16,
         },
       ]}
-    >
-      {children}
-    </Button>
+    ></Button>
   );
 }
