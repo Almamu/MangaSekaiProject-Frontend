@@ -28,12 +28,14 @@ type ServerSettingsActions =
     }
   | { type: "SET_USER_TOKEN"; payload: { serverId: number; token: string } }
   | { type: "SET_STATE"; payload: ServerSettingsType }
-  | { type: "SET_ACTIVE_SERVER"; payload: { serverId: number } };
+  | { type: "SET_ACTIVE_SERVER"; payload: { serverId: number } }
+  | { type: "REMOVE_SERVER"; payload: { serverId: number } };
 
 type ServerSettingsContextType = {
   state: ServerSettingsType;
   actions: {
     addServer: (address: string) => void;
+    removeServer: (serverId: number) => void;
     setToken: (serverId: number, token: string) => void;
     setActiveServer: (activeServerId: number) => void;
   };
@@ -68,6 +70,17 @@ function serverSettingsReducer(
         ...state,
         activeServerId: action.payload.serverId,
       };
+    case "REMOVE_SERVER":
+      return {
+        ...state,
+        servers: state.servers.filter(
+          (_, index) => index !== action.payload.serverId
+        ),
+        activeServerId:
+          state.activeServerId && state.activeServerId > action.payload.serverId
+            ? state.activeServerId - 1
+            : state.activeServerId,
+      };
     default:
       throw new Error("Unknown action type");
   }
@@ -79,6 +92,9 @@ export function ServerSettingsContextProvider({ children }: PropsWithChildren) {
     () => ({
       addServer: (address: string) => {
         dispatch({ type: "ADD_SERVER", payload: { address } });
+      },
+      removeServer: (serverId: number) => {
+        dispatch({ type: "REMOVE_SERVER", payload: { serverId } });
       },
       setToken: (serverId: number, token: string) => {
         dispatch({ type: "SET_USER_TOKEN", payload: { serverId, token } });

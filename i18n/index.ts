@@ -13,6 +13,14 @@ export type Translations = {
       welcome: string;
       scanQR: string;
       manual: string;
+      continue: string;
+      server: {
+        address: string;
+      };
+      infoModal: {
+        title: string;
+        text: string;
+      };
       modal: {
         title: string;
       };

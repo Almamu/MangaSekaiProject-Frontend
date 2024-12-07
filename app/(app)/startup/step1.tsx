@@ -7,20 +7,25 @@ import { ButtonPrimary } from "@/components/ui/Buttons";
 import { useServerSettings } from "@/hooks/useServerSettings";
 import { Modal } from "@/components/ui/Modal";
 import { useCallback, useState } from "react";
-import { TextInput } from "@/components/ui/Input/Base/TextInput";
-import { Icon } from "@/components/ui/Icon";
 import { Loader } from "@/components/ui/Loader";
+import { ServerForm } from "@/components/parts/startup/step1/ServerForm";
 
 export default function Step1() {
   const _serverSettings = useServerSettings();
   const [serverModalVisible, setServerModalVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [infoModalVisible, setInfoModalVisible] = useState(false);
+  const [loading, _setLoading] = useState(false);
 
   const closeServerModal = useCallback(() => {
     setServerModalVisible(false);
   }, [setServerModalVisible]);
 
+  const closeInfoModal = useCallback(() => {
+    setInfoModalVisible(false);
+  }, [setInfoModalVisible]);
+
   // TODO: SUPPORT FOR QR READING AT SOME POINT!
+  // TODO: SUPPORT FOR AUTODETECTING INSTANCES RUNNING ON OUR SAME MACHINE
 
   return (
     <View style={{ flex: 1, flexGrow: 1 }}>
@@ -52,19 +57,22 @@ export default function Step1() {
             <>
               <Text>{t("install.step1.welcome")}</Text>
               <VerticalLayout>
-                <ButtonPrimary
-                  onClick={() => {
-                    setServerModalVisible(true);
-                  }}
-                >
-                  {t("install.step1.manual")}
-                </ButtonPrimary>
                 {Platform.OS !== "web" && (
-                  <ButtonPrimary href="/">
-                    {t("install.step1.scanQR")}
-                  </ButtonPrimary>
+                  <>
+                    <ButtonPrimary
+                      onClick={() => {
+                        setServerModalVisible(true);
+                      }}
+                    >
+                      {t("install.step1.manual")}
+                    </ButtonPrimary>
+
+                    <ButtonPrimary href="/">
+                      {t("install.step1.scanQR")}
+                    </ButtonPrimary>
+                  </>
                 )}
-                <TextInput append={<Icon icon="info-circle" />} />
+                <ServerForm setInfoModalVisible={setInfoModalVisible} />
               </VerticalLayout>
             </>
           )}
@@ -75,16 +83,14 @@ export default function Step1() {
         close={closeServerModal}
         title={t("install.step1.modal.title")}
       >
-        <Text>Test</Text>
-        <TextInput append={<Icon icon="info-circle" />} />
-        <ButtonPrimary
-          onClick={() => {
-            setLoading(true);
-            setServerModalVisible(false);
-          }}
-        >
-          Test
-        </ButtonPrimary>
+        <ServerForm setInfoModalVisible={setInfoModalVisible} />
+      </Modal>
+      <Modal
+        visible={infoModalVisible}
+        close={closeInfoModal}
+        title={t("install.step1.infoModal.title")}
+      >
+        <Text>{t("install.step1.infoModal.text")}</Text>
       </Modal>
     </View>
   );

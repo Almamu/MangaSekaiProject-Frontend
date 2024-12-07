@@ -6,6 +6,14 @@ export const translation: Translations = {
       welcome: "Bienvenido",
       scanQR: "Escanear código QR",
       manual: "Introducir manualmente",
+      continue: "Siguiente",
+      server: {
+        address: "Dirección del servidor",
+      },
+      infoModal: {
+        title: "Dirección del servidor",
+        text: "Introduce aquí la dirección donde se encuentra alojada tu instancia de MangaSekaiProject",
+      },
       modal: {
         title: "Configurar servidor",
       },

@@ -51,6 +51,7 @@ export function TextInput({
       )}
       <RNTextInput
         style={StyleSheet.flatten([styles.text, inputStyle])}
+        placeholderTextColor={colors.textBackground}
         {...props}
       ></RNTextInput>
       {append && (
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     outlineStyle: "none",
     padding: 10,
     // here to prevent issues with web version, due to font size the input gets bigger
-    // there's some minimum size stablished in browsers that make it go nuts a little bit
+    // there's some minimum size established in browsers that make it go nuts a little bit
     // and this handles that
     width: 0,
     fontSize: 16,
