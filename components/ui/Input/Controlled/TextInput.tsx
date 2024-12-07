@@ -5,14 +5,15 @@ import {
 } from "@/components/ui/Input/Base/TextInput";
 import { useTheme } from "@react-navigation/native";
 import { NativeSyntheticEvent } from "react-native/Libraries/Types/CoreEventTypes";
-import {
-  TextInputChangeEventData,
-  TextInputFocusEventData,
-} from "react-native/Libraries/Components/TextInput/TextInput";
+import { TextInputFocusEventData } from "react-native/Libraries/Components/TextInput/TextInput";
 
-type Props<T extends FieldValues> = TextInputProps & {
+type Props<T extends FieldValues> = Omit<
+  TextInputProps,
+  "onChange" | "onChangeText"
+> & {
   name: Path<T>;
   control: Control<T>;
+  onChange?: (e: string) => void;
 };
 
 export const TextInput = <T extends FieldValues>({
@@ -30,7 +31,7 @@ export const TextInput = <T extends FieldValues>({
   });
   const errorStyle = { borderColor: colors.error };
   const appendStyle = { backgroundColor: colors.error };
-  const relayOnChange = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+  const relayOnChange = (e: string) => {
     field.onChange(e);
     onChange?.(e);
   };
@@ -44,7 +45,7 @@ export const TextInput = <T extends FieldValues>({
       style={fieldState.invalid ? errorStyle : {}}
       appendStyle={fieldState.invalid ? appendStyle : {}}
       prependStyle={fieldState.invalid ? appendStyle : {}}
-      onChange={relayOnChange}
+      onChangeText={relayOnChange}
       onBlur={relayOnBlur}
       editable={!field.disabled}
       value={value ?? field.value}
