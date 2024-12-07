@@ -3,6 +3,9 @@ import { AppTheme } from "@/components/AppTheme";
 
 import { init } from "@/i18n";
 import { ServerSettingsContextProvider } from "@/hooks/useServerSettings";
+import { AxiosContextProvider } from "@/hooks/useAxios";
+import React from "react";
+import { BackendContextProvider } from "@/hooks/useBackend";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -13,9 +16,13 @@ if (typeof window !== "undefined") {
 export default function Root() {
   return (
     <ServerSettingsContextProvider>
-      <AppTheme>
-        <Slot initialRouteName="startup/index" />
-      </AppTheme>
+      <AxiosContextProvider>
+        <BackendContextProvider>
+          <AppTheme>
+            <Slot initialRouteName="startup/index" />
+          </AppTheme>
+        </BackendContextProvider>
+      </AxiosContextProvider>
     </ServerSettingsContextProvider>
   );
 }

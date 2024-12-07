@@ -58,7 +58,14 @@ function serverSettingsReducer(
     case "SET_USER_TOKEN":
       return {
         ...state,
-        ...action.payload,
+        servers: [
+          ...state.servers.slice(0, action.payload.serverId),
+          {
+            ...state.servers[action.payload.serverId],
+            token: action.payload.token,
+          },
+          ...state.servers.slice(action.payload.serverId + 1),
+        ],
       };
     case "SET_STATE":
       return {

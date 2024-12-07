@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import {
   Modal as RNModal,
   ModalBaseProps,
@@ -20,12 +20,14 @@ type Props = {
   close: () => void;
   style?: StyleProp<ViewStyle>;
   title?: string;
+  beforeElement?: ReactNode;
 } & Omit<ModalBaseProps, "onRequestClose">;
 
 export function Modal({
   style,
   children,
   close,
+  beforeElement,
   animationType = "fade",
   transparent = true,
   title = "",
@@ -50,6 +52,7 @@ export function Modal({
           ])}
         >
           <HorizontalLayout>
+            {beforeElement}
             <Title style={{ flexGrow: 1, textAlign: "center" }}>{title}</Title>
             <Pressable onPress={close}>
               <Icon icon="close" />

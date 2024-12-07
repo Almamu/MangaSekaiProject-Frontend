@@ -9,6 +9,8 @@ export const translation: Translations = {
       continue: "Next",
       server: {
         address: "Server Address",
+        username: "Username",
+        password: "Password",
       },
       infoModal: {
         title: "Server Address",

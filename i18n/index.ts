@@ -16,6 +16,8 @@ export type Translations = {
       continue: string;
       server: {
         address: string;
+        username: string;
+        password: string;
       };
       infoModal: {
         title: string;
