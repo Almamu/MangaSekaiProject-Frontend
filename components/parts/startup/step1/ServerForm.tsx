@@ -33,9 +33,9 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
     password: "password",
   });
 
-  if (step === 0) {
-    return (
-      <VerticalLayout>
+  return (
+    <>
+      <VerticalLayout style={{ display: step === 0 ? "flex" : "none" }}>
         <ButtonPrimary
           onClick={() => {
             setStep(1);
@@ -46,10 +46,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
 
         <ButtonPrimary href="/">{t("install.step1.scanQR")}</ButtonPrimary>
       </VerticalLayout>
-    );
-  } else if (step === 1) {
-    return (
-      <VerticalLayout>
+      <VerticalLayout style={{ display: step === 1 ? "flex" : "none" }}>
         <TextInput
           textContentType={"URL"}
           placeholder={t("install.step1.server.address")}
@@ -74,10 +71,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
           </ButtonPrimary>
         )}
       </VerticalLayout>
-    );
-  } else if (step === 2) {
-    return (
-      <VerticalLayout>
+      <VerticalLayout style={{ display: step === 2 ? "flex" : "none" }}>
         <TextInput
           textContentType="username"
           placeholder={t("install.step1.server.username")}
@@ -104,6 +98,6 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
           {t("install.step1.back")}
         </ButtonPrimary>
       </VerticalLayout>
-    );
-  }
+    </>
+  );
 }
