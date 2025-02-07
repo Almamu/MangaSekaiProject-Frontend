@@ -10,7 +10,7 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "nswag": "nswag run",
+    "update:api": "nswag run",
     "prepare": "husky",
     "version": "node scripts/bump-version.js && git add -u",
     "postversion": "git push && git push origin --tags"
@@ -20,7 +20,6 @@
   },
   "dependencies": {
     "@expo-google-fonts/poppins": "^0.2.3",
-    "@expo/match-media": "^0.4.0",
     "@expo/vector-icons": "^14.0.2",
     "@hookform/resolvers": "^3.9.1",
     "@react-native-async-storage/async-storage": "1.23.1",
