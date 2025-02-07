@@ -19,7 +19,7 @@ export default function Root() {
       <AxiosContextProvider>
         <BackendContextProvider>
           <AppTheme>
-            <Slot initialRouteName="startup/index" />
+            <Slot />
           </AppTheme>
         </BackendContextProvider>
       </AxiosContextProvider>
