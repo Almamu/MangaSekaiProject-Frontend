@@ -1,19 +1,9 @@
-import { View, ViewProps } from "react-native";
+import styled from "styled-components/native";
 
-export function LayoutView({ style, ...props }: ViewProps) {
-  return (
-    <View
-      style={[
-        {
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-          gap: 10,
-        },
-        style,
-      ]}
-      {...props}
-    ></View>
-  );
-}
+export const LayoutView = styled.View`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 10;
+`;

@@ -1,16 +1,6 @@
-import { ViewProps } from "react-native";
 import { LayoutView } from "./LayoutView";
+import styled from "styled-components/native";
 
-export function HorizontalLayout({ style, ...props }: ViewProps) {
-  return (
-    <LayoutView
-      style={[
-        {
-          flexDirection: "row",
-        },
-        style,
-      ]}
-      {...props}
-    ></LayoutView>
-  );
-}
+export const HorizontalLayout = styled(LayoutView)`
+  flex-direction: row;
+`;

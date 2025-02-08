@@ -62,7 +62,7 @@ const TitleEntry = ({ expanded, setExpanded }: TitleEntryProps) => {
           {activeServer?.friendlyName ?? activeServer?.address}
         </Text>
 
-        <Icon icon="chevron-down" />
+        <Icon icon={expanded ? "chevron-up" : "chevron-down"} />
       </HorizontalLayout>
     </Pressable>
   );

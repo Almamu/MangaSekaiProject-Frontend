@@ -1,16 +1,6 @@
-import { ViewProps } from "react-native";
 import { LayoutView } from "./LayoutView";
+import styled from "styled-components/native";
 
-export function VerticalLayout({ style, ...props }: ViewProps) {
-  return (
-    <LayoutView
-      style={[
-        {
-          flexDirection: "column",
-        },
-        style,
-      ]}
-      {...props}
-    ></LayoutView>
-  );
-}
+export const VerticalLayout = styled(LayoutView)`
+  flex-direction: column;
+`;
