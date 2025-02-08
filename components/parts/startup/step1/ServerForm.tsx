@@ -27,6 +27,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
     control,
     handleSubmit,
     formState: { errors },
+    trigger,
   } = useZodForm<ServerFormType>(ServerFormValidation, {
     address: "",
     username: "admin",
@@ -56,7 +57,9 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
           name={"address"}
         />
         <ButtonPrimary
-          onClick={() => !errors.address && setStep(2)}
+          onClick={async () =>
+            (await trigger("address")) && !errors.address && setStep(2)
+          }
           append={<Icon icon={"arrow-right"} />}
         >
           {t("install.step1.continue")}
@@ -85,7 +88,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
           name={"password"}
         />
         <ButtonPrimary
-          onClick={() => handleSubmit(pingServer)}
+          onClick={handleSubmit(pingServer)}
           append={<Icon icon="arrow-right" />}
         >
           {t("install.step1.continue")}
