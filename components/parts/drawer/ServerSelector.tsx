@@ -94,7 +94,7 @@ const AddServer = () => {
   );
 };
 
-export default function ServerSelector() {
+export const ServerSelector = () => {
   const { colors } = useTheme();
   const serverSettings = useServerSettings();
   const activeServer = useActiveServer();
@@ -117,4 +117,4 @@ export default function ServerSelector() {
       )}
     </VerticalLayout>
   );
-}
+};

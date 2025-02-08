@@ -1,9 +1,6 @@
-import { Drawer } from "expo-router/drawer";
 import { useServerSettings } from "@/hooks/useServerSettings";
 import { Redirect } from "expo-router";
-import { View } from "react-native";
-import { DrawerContent } from "@react-navigation/drawer";
-import ServerSelector from "@/components/parts/drawer/ServerSelector";
+import { MobileDashboard } from "@/components/parts/layouts/MobileDashboard";
 
 export default function Layout() {
   const serverSettings = useServerSettings();
@@ -12,16 +9,5 @@ export default function Layout() {
     return <Redirect href="/" />;
   }
 
-  return (
-    <Drawer
-      drawerContent={(props) => (
-        <View>
-          <ServerSelector />
-          <DrawerContent {...props} />
-        </View>
-      )}
-    >
-      <Drawer.Screen name="dashboard" options={{ title: "Dashboard" }} />
-    </Drawer>
-  );
+  return <MobileDashboard />;
 }

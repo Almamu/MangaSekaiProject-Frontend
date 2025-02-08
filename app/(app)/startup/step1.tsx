@@ -69,7 +69,7 @@ export default function Step1() {
         setLoading(false);
       }
     },
-    [setLoading]
+    [abortSignal, backend, client, router, serverSettings.actions]
   );
 
   // TODO: SUPPORT FOR QR READING AT SOME POINT!
