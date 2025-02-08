@@ -14,10 +14,26 @@ import {
   ServerForm,
   ServerFormType,
 } from "@/components/parts/startup/step1/ServerForm";
+import { useBackendClient, useBackendContext } from "@/hooks/useBackend";
+import { Body } from "@/domain/backend";
+import { useServerSettings } from "@/hooks/useServerSettings";
+import { useAbortSignal } from "@/hooks/useAbortSignal";
+import { useRouter } from "expo-router";
+
+enum LoadingStep {
+  WAITING = "WAITING",
+  AUTHENTICATING = "AUTHENTICATING",
+}
 
 export default function Step1() {
   const [infoModalVisible, setInfoModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(LoadingStep.WAITING);
+  const backend = useBackendContext();
+  const client = useBackendClient();
+  const serverSettings = useServerSettings();
+  const abortSignal = useAbortSignal();
+  const router = useRouter();
 
   const closeInfoModal = useCallback(() => {
     setInfoModalVisible(false);
@@ -25,7 +41,33 @@ export default function Step1() {
 
   const pingServer = useCallback(
     async (form: ServerFormType) => {
+      setLoadingStep(LoadingStep.AUTHENTICATING);
       setLoading(true);
+
+      try {
+        // override server so we can comunicate with it directly
+        backend.overrideServer(form.address);
+        // attempt a login
+        const result = await client.login(
+          new Body({
+            username: form.username,
+            password: form.password,
+          }),
+          abortSignal
+        );
+        // everything went right, save it
+        const guid = serverSettings.actions.addServer(form.address);
+
+        serverSettings.actions.setToken(guid, result.token);
+        serverSettings.actions.setActiveServer(guid);
+        // now take the user to the home page
+        router.replace("/home/dashboard");
+      } catch (e) {
+        // TODO: SHOW ERROR
+        console.dir(e);
+      } finally {
+        setLoading(false);
+      }
     },
     [setLoading]
   );
@@ -53,12 +95,17 @@ export default function Step1() {
       >
         <VerticalLayout style={{ flexGrow: 1 }}>
           {loading ? (
-            <Loader
-              style={{
-                transform: [{ scale: Platform.select({ default: 1, web: 5 }) }],
-              }}
-              size="large"
-            />
+            <>
+              <Loader
+                style={{
+                  transform: [
+                    { scale: Platform.select({ default: 1, web: 5 }) },
+                  ],
+                }}
+                size="large"
+              />
+              <Text>{loadingStep}</Text>
+            </>
           ) : (
             <>
               <HorizontalLayout

@@ -7,14 +7,14 @@ import {
   useMemo,
   useState,
 } from "react";
-import { Client, IClient } from "@/domain/backend";
+import { Client } from "@/domain/backend";
 import { useAxios } from "@/hooks/useAxios";
 import { useServerSettings } from "@/hooks/useServerSettings";
 import { AxiosError, InternalAxiosRequestConfig } from "axios";
 
 interface ContextProps {
   overrideServer(address: string, token?: string): void;
-  client: IClient;
+  client: Client;
 }
 
 export const BackendContext = createContext<ContextProps>({} as ContextProps);
@@ -22,9 +22,20 @@ export const BackendContext = createContext<ContextProps>({} as ContextProps);
 export function BackendContextProvider({ children }: PropsWithChildren) {
   const axios = useAxios();
   const serverSettings = useServerSettings();
-  const [serverAddress, setServerAddress] = useState<string | null>(null);
-  const [serverToken, setServerToken] = useState<string | null>(null);
+  const [serverToken, setServerToken] = useState<string | undefined>();
   const client = useMemo(() => {
+    return new Client("", axios);
+  }, [axios]);
+  const overrideServer = useCallback(
+    (address: string, token?: string) => {
+      client.setBaseUrl(address);
+      setServerToken(token);
+    },
+    [client]
+  );
+
+  // takes care of refreshing the interceptors used when the token changes
+  useEffect(() => {
     // clear interceptors in axios
     axios.interceptors.request.clear();
     // setup new interceptors to add the token
@@ -42,28 +53,24 @@ export function BackendContextProvider({ children }: PropsWithChildren) {
         return Promise.reject(error);
       }
     );
-
-    return new Client(serverAddress ?? "", axios);
-  }, [axios, serverAddress, serverToken]);
-  const overrideServer = useCallback(
-    (address: string, token?: string) => {
-      setServerAddress(address);
-      setServerToken(token ? token : null);
-    },
-    [setServerAddress, setServerToken]
-  );
-
+  }, [axios, serverToken]);
   useEffect(() => {
-    const { activeServerId, servers } = serverSettings.state;
+    const { activeServerGuid, servers } = serverSettings.state;
 
     // server settings have changed, update server address to the new one
-    if (activeServerId) {
-      const { address, token } = servers[activeServerId];
-
-      setServerAddress(address);
-      setServerToken(token ? token : null);
+    if (!activeServerGuid) {
+      return;
     }
-  }, [serverSettings]);
+
+    const server = servers.find((x) => x.guid === activeServerGuid);
+
+    if (!server) {
+      return;
+    }
+
+    client.setBaseUrl(server.address);
+    setServerToken(server.token);
+  }, [client, serverSettings.state]);
 
   return (
     <BackendContext.Provider value={{ overrideServer, client }}>
@@ -72,5 +79,5 @@ export function BackendContextProvider({ children }: PropsWithChildren) {
   );
 }
 
-export const useBackendClient = () => useContext(BackendContext).client;
+export const useBackendClient = () => useBackendContext().client;
 export const useBackendContext = () => useContext(BackendContext);

@@ -17,7 +17,6 @@
             "dateTimeType": "Luxon",
             "nullValue": "Undefined",
             "generateClientClasses": true,
-            "generateClientInterfaces": true,
             "generateOptionalParameters": true,
             "exportTypes": true,
             "wrapDtoExceptions": true,
@@ -27,7 +26,6 @@
             "generateResponseClasses": false,
             "responseClass": "SwaggerResponse",
             "protectedMethods": [],
-            "configurationClass": "",
             "useTransformOptionsMethod": false,
             "useTransformResultMethod": false,
             "generateDtoTypes": true,
@@ -45,11 +43,13 @@
             "generateConstructorInterface": true,
             "convertConstructorInterfaceData": true,
             "importRequiredTypes": true,
-            "useGetBaseUrlMethod": false,
+            "clientBaseClass": "ApiUrlProvider",
             "queryNullValue": "",
             "inlineNamedDictionaries": false,
             "inlineNamedAny": false,
-            "output": "./domain/backend.ts"
+            "useAbortSignal": true,
+            "output": "./domain/backend.ts",
+            "extensionCode": "./domain/extensions.ts"
         }
     }
 }

@@ -8,79 +8,19 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-import axios, { AxiosError } from 'axios';
+import { ApiUrlProvider } from "./common";import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, CancelToken } from 'axios';
 
 import { DateTime, Duration } from "luxon";
 
-export interface IClient {
-    /**
-     * Performs login
-     * @param body (optional) 
-     * @return Token information after successful login
-     */
-    login(body?: Body | undefined): Promise<TokenResponse>;
-    /**
-     * Performs logout
-     * @return Successful logout
-     */
-    logout(): Promise<void>;
-    /**
-     * Refreshes a valid token
-     * @return Token information after successful refresh
-     */
-    refreshToken(): Promise<TokenResponse>;
-    /**
-     * @return Job execution was queued successfully.
-     */
-    queueRefreshMedia(): Promise<void>;
-    /**
-     * @return Queued jobs were retrieved successfully.
-     */
-    getQueuedJobs(): Promise<string[]>;
-    /**
-     * @param page (optional) Page number
-     * @param perPage (optional) Number of items per page
-     * @return List of series
-     */
-    listSeries(page?: number | undefined, perPage?: number | undefined): Promise<SeriesListPaginated>;
-    /**
-     * @param serieId Serie ID
-     * @return Series information
-     */
-    getSerieById(serieId: number): Promise<Series>;
-    /**
-     * @param serieId Serie ID
-     * @param page (optional) Page number
-     * @param perPage (optional) Number of items per page
-     * @return Chapter information
-     */
-    getChaptersForSeries(serieId: number, page?: number | undefined, perPage?: number | undefined): Promise<ChapterListPaginated>;
-    /**
-     * @param serieId Serie ID
-     * @param chapterId Chapter ID
-     * @return List of pages
-     */
-    getPagesForChapter(serieId: number, chapterId: number): Promise<string[]>;
-    /**
-     * @param page (optional) Page number
-     * @param perPage (optional) Number of items per page
-     * @return List of staff members
-     */
-    listStaff(page?: number | undefined, perPage?: number | undefined): Promise<StaffListPaginated>;
-    /**
-     * @param staffId Staff ID
-     * @return Staff member information
-     */
-    getStaffById(staffId: number): Promise<Staff>;
-}
-
-export class Client implements IClient {
+export class Client extends ApiUrlProvider {
     protected instance: AxiosInstance;
     protected baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, instance?: AxiosInstance) {
+
+        super();
 
         this.instance = instance || axios.create();
 
@@ -90,10 +30,9 @@ export class Client implements IClient {
 
     /**
      * Performs login
-     * @param body (optional) 
      * @return Token information after successful login
      */
-    login(body?: Body | undefined, cancelToken?: CancelToken): Promise<TokenResponse> {
+    login(body: Body, signal?: AbortSignal): Promise<TokenResponse> {
         let url_ = this.baseUrl + "/api/v1/auth/login";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -107,7 +46,7 @@ export class Client implements IClient {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -149,7 +88,7 @@ export class Client implements IClient {
      * Performs logout
      * @return Successful logout
      */
-    logout( cancelToken?: CancelToken): Promise<void> {
+    logout(signal?: AbortSignal): Promise<void> {
         let url_ = this.baseUrl + "/api/v1/auth/logout";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -158,7 +97,7 @@ export class Client implements IClient {
             url: url_,
             headers: {
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -197,7 +136,7 @@ export class Client implements IClient {
      * Refreshes a valid token
      * @return Token information after successful refresh
      */
-    refreshToken( cancelToken?: CancelToken): Promise<TokenResponse> {
+    refreshToken(signal?: AbortSignal): Promise<TokenResponse> {
         let url_ = this.baseUrl + "/api/v1/auth/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -207,7 +146,7 @@ export class Client implements IClient {
             headers: {
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -248,7 +187,7 @@ export class Client implements IClient {
     /**
      * @return Job execution was queued successfully.
      */
-    queueRefreshMedia( cancelToken?: CancelToken): Promise<void> {
+    queueRefreshMedia(signal?: AbortSignal): Promise<void> {
         let url_ = this.baseUrl + "/api/v1/admin/media/refresh";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -257,7 +196,7 @@ export class Client implements IClient {
             url: url_,
             headers: {
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -295,7 +234,7 @@ export class Client implements IClient {
     /**
      * @return Queued jobs were retrieved successfully.
      */
-    getQueuedJobs( cancelToken?: CancelToken): Promise<string[]> {
+    getQueuedJobs(signal?: AbortSignal): Promise<string[]> {
         let url_ = this.baseUrl + "/api/v1/admin/jobs/queue";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -305,7 +244,7 @@ export class Client implements IClient {
             headers: {
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -355,7 +294,7 @@ export class Client implements IClient {
      * @param perPage (optional) Number of items per page
      * @return List of series
      */
-    listSeries(page?: number | undefined, perPage?: number | undefined, cancelToken?: CancelToken): Promise<SeriesListPaginated> {
+    listSeries(page?: number | undefined, perPage?: number | undefined, signal?: AbortSignal): Promise<SeriesListPaginated> {
         let url_ = this.baseUrl + "/api/v1/series?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -373,7 +312,7 @@ export class Client implements IClient {
             headers: {
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -415,7 +354,7 @@ export class Client implements IClient {
      * @param serieId Serie ID
      * @return Series information
      */
-    getSerieById(serieId: number, cancelToken?: CancelToken): Promise<Series> {
+    getSerieById(serieId: number, signal?: AbortSignal): Promise<Series> {
         let url_ = this.baseUrl + "/api/v1/series/{serieId}";
         if (serieId === undefined || serieId === null)
             throw new Error("The parameter 'serieId' must be defined.");
@@ -428,7 +367,7 @@ export class Client implements IClient {
             headers: {
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -472,7 +411,7 @@ export class Client implements IClient {
      * @param perPage (optional) Number of items per page
      * @return Chapter information
      */
-    getChaptersForSeries(serieId: number, page?: number | undefined, perPage?: number | undefined, cancelToken?: CancelToken): Promise<ChapterListPaginated> {
+    getChaptersForSeries(serieId: number, page?: number | undefined, perPage?: number | undefined, signal?: AbortSignal): Promise<ChapterListPaginated> {
         let url_ = this.baseUrl + "/api/v1/series/{serieId}/chapters?";
         if (serieId === undefined || serieId === null)
             throw new Error("The parameter 'serieId' must be defined.");
@@ -493,7 +432,7 @@ export class Client implements IClient {
             headers: {
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -536,7 +475,7 @@ export class Client implements IClient {
      * @param chapterId Chapter ID
      * @return List of pages
      */
-    getPagesForChapter(serieId: number, chapterId: number, cancelToken?: CancelToken): Promise<string[]> {
+    getPagesForChapter(serieId: number, chapterId: number, signal?: AbortSignal): Promise<string[]> {
         let url_ = this.baseUrl + "/api/v1/series/{serieId}/chapters/{chapterId}/pages";
         if (serieId === undefined || serieId === null)
             throw new Error("The parameter 'serieId' must be defined.");
@@ -552,7 +491,7 @@ export class Client implements IClient {
             headers: {
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -602,7 +541,7 @@ export class Client implements IClient {
      * @param perPage (optional) Number of items per page
      * @return List of staff members
      */
-    listStaff(page?: number | undefined, perPage?: number | undefined, cancelToken?: CancelToken): Promise<StaffListPaginated> {
+    listStaff(page?: number | undefined, perPage?: number | undefined, signal?: AbortSignal): Promise<StaffListPaginated> {
         let url_ = this.baseUrl + "/api/v1/staff?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -620,7 +559,7 @@ export class Client implements IClient {
             headers: {
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -662,7 +601,7 @@ export class Client implements IClient {
      * @param staffId Staff ID
      * @return Staff member information
      */
-    getStaffById(staffId: number, cancelToken?: CancelToken): Promise<Staff> {
+    getStaffById(staffId: number, signal?: AbortSignal): Promise<Staff> {
         let url_ = this.baseUrl + "/api/v1/staff/{staffId}";
         if (staffId === undefined || staffId === null)
             throw new Error("The parameter 'staffId' must be defined.");
@@ -675,7 +614,7 @@ export class Client implements IClient {
             headers: {
                 "Accept": "application/json"
             },
-            cancelToken
+            signal
         };
 
         return this.instance.request(options_).catch((_error: any) => {
@@ -1595,3 +1534,5 @@ function throwException(message: string, status: number, response: string, heade
 function isAxiosError(obj: any): obj is AxiosError {
     return obj && obj.isAxiosError === true;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars

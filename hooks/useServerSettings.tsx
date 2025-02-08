@@ -7,6 +7,7 @@ import {
   useReducer,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { v4 as uuidv4 } from "uuid";
 
 const STATE_KEY = "@Server:settings";
 const DEFAULT_STATE: ServerSettingsType = {
@@ -15,29 +16,30 @@ const DEFAULT_STATE: ServerSettingsType = {
 
 type ServerSettingsType = {
   servers: {
+    guid: string;
     address: string;
     token?: string;
     friendlyName?: string;
   }[];
-  activeServerId?: number;
+  activeServerGuid?: string;
 };
 type ServerSettingsActions =
   | {
       type: "ADD_SERVER";
-      payload: { address: string };
+      payload: { guid: string; address: string };
     }
-  | { type: "SET_USER_TOKEN"; payload: { serverId: number; token: string } }
+  | { type: "SET_USER_TOKEN"; payload: { guid: string; token: string } }
   | { type: "SET_STATE"; payload: ServerSettingsType }
-  | { type: "SET_ACTIVE_SERVER"; payload: { serverId: number } }
-  | { type: "REMOVE_SERVER"; payload: { serverId: number } };
+  | { type: "SET_ACTIVE_SERVER"; payload: { guid: string } }
+  | { type: "REMOVE_SERVER"; payload: { guid: string } };
 
 type ServerSettingsContextType = {
   state: ServerSettingsType;
   actions: {
-    addServer: (address: string) => void;
-    removeServer: (serverId: number) => void;
-    setToken: (serverId: number, token: string) => void;
-    setActiveServer: (activeServerId: number) => void;
+    addServer: (address: string) => string;
+    removeServer: (guid: string) => void;
+    setToken: (guid: string, token: string) => void;
+    setActiveServer: (guid: string) => void;
   };
 };
 
@@ -55,18 +57,23 @@ function serverSettingsReducer(
         ...state,
         servers: [...state.servers, { ...action.payload }],
       };
-    case "SET_USER_TOKEN":
+    case "SET_USER_TOKEN": {
+      const index = state.servers.findIndex(
+        (x) => x.guid === action.payload.guid
+      );
+
       return {
         ...state,
         servers: [
-          ...state.servers.slice(0, action.payload.serverId),
+          ...state.servers.slice(0, index),
           {
-            ...state.servers[action.payload.serverId],
+            ...state.servers[index],
             token: action.payload.token,
           },
-          ...state.servers.slice(action.payload.serverId + 1),
+          ...state.servers.slice(index + 1),
         ],
       };
+    }
     case "SET_STATE":
       return {
         ...state,
@@ -75,18 +82,19 @@ function serverSettingsReducer(
     case "SET_ACTIVE_SERVER":
       return {
         ...state,
-        activeServerId: action.payload.serverId,
+        activeServerGuid: action.payload.guid,
       };
     case "REMOVE_SERVER":
       return {
         ...state,
         servers: state.servers.filter(
-          (_, index) => index !== action.payload.serverId
+          (server) => server.guid !== action.payload.guid
         ),
-        activeServerId:
-          state.activeServerId && state.activeServerId > action.payload.serverId
-            ? state.activeServerId - 1
-            : state.activeServerId,
+        activeServerGuid:
+          state.activeServerGuid === action.payload.guid &&
+          state.servers.length > 1
+            ? state.servers[0].guid
+            : undefined,
       };
     default:
       throw new Error("Unknown action type");
@@ -98,18 +106,22 @@ export function ServerSettingsContextProvider({ children }: PropsWithChildren) {
   const actions = useMemo(
     () => ({
       addServer: (address: string) => {
-        dispatch({ type: "ADD_SERVER", payload: { address } });
+        const guid = uuidv4();
+
+        dispatch({ type: "ADD_SERVER", payload: { address, guid } });
+
+        return guid;
       },
-      removeServer: (serverId: number) => {
-        dispatch({ type: "REMOVE_SERVER", payload: { serverId } });
+      removeServer: (guid: string) => {
+        dispatch({ type: "REMOVE_SERVER", payload: { guid } });
       },
-      setToken: (serverId: number, token: string) => {
-        dispatch({ type: "SET_USER_TOKEN", payload: { serverId, token } });
+      setToken: (guid: string, token: string) => {
+        dispatch({ type: "SET_USER_TOKEN", payload: { guid, token } });
       },
-      setActiveServer: (serverId: number) => {
+      setActiveServer: (guid: string) => {
         dispatch({
           type: "SET_ACTIVE_SERVER",
-          payload: { serverId },
+          payload: { guid },
         });
       },
     }),
