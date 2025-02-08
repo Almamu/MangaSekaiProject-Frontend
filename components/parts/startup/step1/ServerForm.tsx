@@ -65,7 +65,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
           <ButtonPrimary
             muted
             onClick={() => setStep(0)}
-            prepend={<Icon icon="arrow-left" />}
+            prepend={<Icon muted icon="arrow-left" />}
           >
             {t("install.step1.back")}
           </ButtonPrimary>
@@ -86,14 +86,14 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
         />
         <ButtonPrimary
           onClick={() => handleSubmit(pingServer)}
-          append={<Icon icon={"arrow-right"} />}
+          append={<Icon icon="arrow-right" />}
         >
           {t("install.step1.continue")}
         </ButtonPrimary>
         <ButtonPrimary
           muted
           onClick={() => setStep(1)}
-          prepend={<Icon icon="arrow-left" />}
+          prepend={<Icon muted icon="arrow-left" />}
         >
           {t("install.step1.back")}
         </ButtonPrimary>

@@ -8,15 +8,16 @@ type IconList<T> = T extends ExpoIconList<infer U, infer _> ? U : never;
 type Props = {
   icon: IconList<typeof FontAwesome>;
   style?: StyleProp<TextStyle>;
+  muted?: boolean;
 };
 
-export function Icon({ icon, style }: Props) {
+export function Icon({ icon, style, muted }: Props) {
   const { colors } = useTheme();
 
   return (
     <FontAwesome
       style={StyleSheet.flatten([
-        { color: colors.textLight },
+        { color: muted ? colors.textDark : colors.textLight },
         { fontSize: 20 },
         style,
       ])}

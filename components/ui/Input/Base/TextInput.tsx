@@ -15,7 +15,7 @@ import React from "react";
 export type TextInputProps = {
   style?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
-  prependStyle?: StyleProp<TextStyle>;
+  prependStyle?: StyleProp<ViewStyle>;
   appendStyle?: StyleProp<ViewStyle>;
   append?: React.ReactNode;
   prepend?: React.ReactNode;

@@ -22,7 +22,7 @@ export function ButtonPrimary({ muted, ...props }: Props) {
       textStyle={[
         props.textStyle,
         {
-          color: data.colors.textLight,
+          color: muted ? data.colors.textDark : data.colors.textLight,
           fontFamily: Fonts.Medium,
           fontSize: 16,
         },

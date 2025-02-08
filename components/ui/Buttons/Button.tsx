@@ -8,7 +8,7 @@ import React, { PropsWithChildren } from "react";
 import { Href, Link } from "expo-router";
 import { Text } from "@/components/ui/Text";
 
-type LinkProps = { href: Href<string | object>; method?: "replace" | "push" };
+type LinkProps = { href: Href; method?: "replace" | "push" };
 type ClickProps = { onClick: () => void };
 type LinkOrClick = LinkProps | ClickProps;
 export type ButtonProps = PropsWithChildren<

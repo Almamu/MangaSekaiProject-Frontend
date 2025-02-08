@@ -1,10 +1,10 @@
-import "@react-navigation/native";
 import { PropsWithChildren } from "react";
 
 declare module "@react-navigation/native" {
   export function ThemeProvider(props: PropsWithChildren<{ value: Theme }>);
+  export function useTheme(): NativeTheme;
 
-  export type Theme = {
+  export interface NativeTheme {
     colors: {
       primary: string;
       primary100: string;
@@ -16,5 +16,7 @@ declare module "@react-navigation/native" {
       error: string;
       modalBackground: string;
     };
-  };
+  }
+
+  export type Theme = NativeTheme;
 }
