@@ -1,6 +1,8 @@
 import { Theme } from "@react-navigation/native";
+import { FontStyles } from "@/themes/fonts";
 
 export const LightTheme: Theme = {
+  dark: false,
   colors: {
     background: "#fff",
     primary: "#7683CD",
@@ -12,4 +14,5 @@ export const LightTheme: Theme = {
     error: "#A42437",
     modalBackground: "#9476CD",
   },
+  fonts: FontStyles,
 };

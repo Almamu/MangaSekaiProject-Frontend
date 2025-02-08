@@ -6,6 +6,7 @@ import { ServerSettingsContextProvider } from "@/hooks/useServerSettings";
 import { AxiosContextProvider } from "@/hooks/useAxios";
 import React from "react";
 import { BackendContextProvider } from "@/hooks/useBackend";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,14 +16,16 @@ if (typeof window !== "undefined") {
 
 export default function Root() {
   return (
-    <ServerSettingsContextProvider>
-      <AxiosContextProvider>
-        <BackendContextProvider>
-          <AppTheme>
-            <Slot />
-          </AppTheme>
-        </BackendContextProvider>
-      </AxiosContextProvider>
-    </ServerSettingsContextProvider>
+    <GestureHandlerRootView>
+      <ServerSettingsContextProvider>
+        <AxiosContextProvider>
+          <BackendContextProvider>
+            <AppTheme>
+              <Slot />
+            </AppTheme>
+          </BackendContextProvider>
+        </AxiosContextProvider>
+      </ServerSettingsContextProvider>
+    </GestureHandlerRootView>
   );
 }

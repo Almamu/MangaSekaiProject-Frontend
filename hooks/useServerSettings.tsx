@@ -14,13 +14,15 @@ const DEFAULT_STATE: ServerSettingsType = {
   servers: [],
 };
 
+export type ServerEntry = {
+  guid: string;
+  address: string;
+  token?: string;
+  friendlyName?: string;
+};
+
 type ServerSettingsType = {
-  servers: {
-    guid: string;
-    address: string;
-    token?: string;
-    friendlyName?: string;
-  }[];
+  servers: ServerEntry[];
   activeServerGuid?: string;
 };
 type ServerSettingsActions =

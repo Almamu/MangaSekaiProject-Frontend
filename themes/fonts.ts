@@ -23,8 +23,10 @@ const FontNames = {
 
 export const Fonts = {
   Light: FontNames.Poppins_300Light,
-  Normal: FontNames.Poppins_400Regular,
+  Regular: FontNames.Poppins_400Regular,
   Medium: FontNames.Poppins_500Medium,
+  Bold: FontNames.Poppins_700Bold,
+  Heavy: FontNames.Poppins_900Black,
 };
 
 export const FontStyles = StyleSheet.create({
@@ -32,13 +34,21 @@ export const FontStyles = StyleSheet.create({
     fontSize: 20,
     fontFamily: Fonts.Light,
   },
-  normal: {
+  regular: {
     fontSize: 20,
-    fontFamily: Fonts.Normal,
+    fontFamily: Fonts.Regular,
   },
   medium: {
     fontSize: 20,
     fontFamily: Fonts.Medium,
+  },
+  bold: {
+    fontSize: 20,
+    fontFamily: Fonts.Bold,
+  },
+  heavy: {
+    fontSize: 20,
+    fontFamily: Fonts.Heavy,
   },
   title: {
     fontSize: 24,

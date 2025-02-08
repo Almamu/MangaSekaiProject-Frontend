@@ -8,8 +8,8 @@ export default function Index() {
     return <Redirect href="/startup/step1" />;
   }
 
-  if (!serverSettings.state.activeServerId) {
-    return <Redirect href="/home/server-select" />;
+  if (!serverSettings.state.activeServerGuid) {
+    return <Redirect href="/server-select" />;
   } else {
     return <Redirect href="/home/dashboard" />;
   }
