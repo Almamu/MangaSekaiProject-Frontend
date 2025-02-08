@@ -2,8 +2,7 @@ import { useServerSettings } from "@/hooks/useServerSettings";
 import { Redirect, Slot } from "expo-router";
 import { useWindowDimensions } from "react-native";
 import { MobileDashboard } from "@/components/parts/layouts/MobileDashboard";
-import styled, { ThemeProvider } from "styled-components";
-import { useTheme } from "@react-navigation/native";
+import styled from "styled-components";
 import { useState } from "react";
 
 const Container = styled.div`
@@ -27,7 +26,6 @@ const ContentPanel = styled.div`
 export default function Layout() {
   const serverSettings = useServerSettings();
   const dimensions = useWindowDimensions();
-  const theme = useTheme();
   const [drawerExpanded, _setDrawerExpanded] = useState(true);
 
   if (serverSettings.state.servers.length === 0) {
@@ -38,14 +36,12 @@ export default function Layout() {
     return <MobileDashboard />;
   } else {
     return (
-      <ThemeProvider theme={theme}>
-        <Container>
-          <LeftPanel $expanded={drawerExpanded} />
-          <ContentPanel>
-            <Slot />
-          </ContentPanel>
-        </Container>
-      </ThemeProvider>
+      <Container>
+        <LeftPanel $expanded={drawerExpanded} />
+        <ContentPanel>
+          <Slot />
+        </ContentPanel>
+      </Container>
     );
   }
 }

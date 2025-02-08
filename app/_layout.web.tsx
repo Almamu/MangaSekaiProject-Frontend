@@ -2,7 +2,7 @@ import { SplashScreen } from "expo-router";
 
 import { init } from "@/i18n";
 import React from "react";
-import AppRoot from "@/components/parts/AppRoot";
+import { AppRoot } from "@/components/parts/AppRoot";
 
 SplashScreen.preventAutoHideAsync();
 

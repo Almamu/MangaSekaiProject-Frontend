@@ -5,7 +5,7 @@ import { AppTheme } from "@/components/AppTheme";
 import { Slot } from "expo-router";
 import React from "react";
 
-export default function AppRoot() {
+export const AppRoot = () => {
   return (
     <ServerSettingsContextProvider>
       <AxiosContextProvider>
@@ -17,4 +17,4 @@ export default function AppRoot() {
       </AxiosContextProvider>
     </ServerSettingsContextProvider>
   );
-}
+};

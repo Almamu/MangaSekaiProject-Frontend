@@ -1,27 +1,16 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Icon as ExpoIconList } from "@expo/vector-icons/build/createIconSet";
-import { TextStyle, StyleProp, StyleSheet } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import styled from "styled-components/native";
 
 type IconList<T> = T extends ExpoIconList<infer U, infer _> ? U : never;
 
-type Props = {
-  icon: IconList<typeof FontAwesome>;
-  style?: StyleProp<TextStyle>;
+export const Icon = styled(FontAwesome).attrs<{
   muted?: boolean;
-};
-
-export function Icon({ icon, style, muted }: Props) {
-  const { colors } = useTheme();
-
-  return (
-    <FontAwesome
-      style={StyleSheet.flatten([
-        { color: muted ? colors.textDark : colors.textLight },
-        { fontSize: 20 },
-        style,
-      ])}
-      name={icon}
-    />
-  );
-}
+  icon: IconList<typeof FontAwesome>;
+}>(({ icon }) => ({
+  name: icon,
+}))`
+  color: ${({ muted, theme: { colors } }) =>
+    muted ? colors.textDark : colors.textLight};
+  font-size: 20px;
+`;
