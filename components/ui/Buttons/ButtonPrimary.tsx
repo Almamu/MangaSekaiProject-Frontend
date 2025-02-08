@@ -1,32 +1,20 @@
-import { Button, ButtonProps } from "./Button";
-import { useTheme } from "@react-navigation/native";
-import { Fonts } from "@/themes/fonts";
+import { Button } from "./Button";
+import styled, { css, toStyleSheet } from "styled-components/native";
+import { StyleSheet } from "react-native";
 
-type Props = ButtonProps & { muted?: boolean };
-
-export function ButtonPrimary({ muted, ...props }: Props) {
-  const data = useTheme();
-
-  return (
-    <Button
-      {...props}
-      style={[
-        props.style,
-        {
-          backgroundColor: muted ? "transparent" : data.colors.primary,
-          borderWidth: 2,
-          borderStyle: "solid",
-          borderColor: data.colors.primary,
-        },
-      ]}
-      textStyle={[
-        props.textStyle,
-        {
-          color: muted ? data.colors.textDark : data.colors.textLight,
-          fontFamily: Fonts.Medium,
-          fontSize: 16,
-        },
-      ]}
-    ></Button>
-  );
-}
+export const ButtonPrimary = styled(Button).attrs<{ muted?: boolean }>(
+  ({ muted, theme: { colors, fonts }, textStyle }) => ({
+    textStyle: StyleSheet.flatten([
+      toStyleSheet(css`
+        color: ${muted ? colors.textDark : colors.textLight};
+        font-family: ${fonts.medium.fontFamily};
+        font-size: 16px;
+      `),
+      textStyle,
+    ]),
+  })
+)`
+  background-color: ${({ muted, theme: { colors } }) =>
+    muted ? "transparent" : colors.primary};
+  border: 2px solid ${({ theme: { colors } }) => colors.primary};
+`;

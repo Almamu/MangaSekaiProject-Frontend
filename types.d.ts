@@ -5,6 +5,22 @@ declare module "@react-navigation/native" {
   export function useTheme(): NativeTheme;
 
   // WARNING: HAVE TO KEEP UP TO DATE WITH ORIGINAL DEFINITION TO ADD EXTRA INFO...
+  type FontStyle = {
+    fontFamily: string;
+    fontWeight:
+      | "normal"
+      | "bold"
+      | "100"
+      | "200"
+      | "300"
+      | "400"
+      | "500"
+      | "600"
+      | "700"
+      | "800"
+      | "900";
+    fontSize: number;
+  };
   export interface NativeTheme {
     dark: boolean;
     colors: {

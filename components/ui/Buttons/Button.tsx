@@ -1,4 +1,3 @@
-import { Pressable, StyleSheet } from "react-native";
 import { StyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import {
   TextStyle,
@@ -7,6 +6,7 @@ import {
 import React, { PropsWithChildren } from "react";
 import { Href, Link } from "expo-router";
 import { Text } from "@/components/ui/Text";
+import styled from "styled-components/native";
 
 type LinkProps = { href: Href; method?: "replace" | "push" };
 type ClickProps = { onClick: () => void };
@@ -19,6 +19,17 @@ export type ButtonProps = PropsWithChildren<
     prepend?: React.ReactNode;
   } & LinkOrClick
 >;
+
+const ButtonContainer = styled.Pressable`
+  gap: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+`;
 
 export function Button({
   children,
@@ -36,36 +47,20 @@ export function Button({
         push={props.method === "push"}
         replace={!props.method || props.method === "replace"}
       >
-        <Pressable style={StyleSheet.flatten([styles.parent, style])}>
+        <ButtonContainer style={style}>
           {!!prepend && prepend}
           <Text style={textStyle}>{children}</Text>
           {!!append && append}
-        </Pressable>
+        </ButtonContainer>
       </Link>
     );
   } else {
     return (
-      <Pressable
-        style={StyleSheet.flatten([styles.parent, style])}
-        onPress={props.onClick}
-      >
+      <ButtonContainer style={style} onPress={props.onClick}>
         {!!prepend && prepend}
         <Text style={textStyle}>{children}</Text>
         {!!append && append}
-      </Pressable>
+      </ButtonContainer>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  parent: {
-    gap: 10,
-    borderRadius: 5,
-    display: "flex",
-    flexDirection: "row",
-    padding: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "stretch",
-  },
-});

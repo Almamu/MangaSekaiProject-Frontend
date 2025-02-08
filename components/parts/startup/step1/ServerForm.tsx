@@ -51,7 +51,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
         <TextInput
           textContentType={"URL"}
           placeholder={t("install.step1.server.address")}
-          append={<Icon icon="info-circle" />}
+          append={<Icon name="info-circle" />}
           appendPress={() => setInfoModalVisible(true)}
           control={control}
           name={"address"}
@@ -60,7 +60,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
           onClick={async () =>
             (await trigger("address")) && !errors.address && setStep(2)
           }
-          append={<Icon icon={"arrow-right"} />}
+          append={<Icon name={"arrow-right"} />}
         >
           {t("install.step1.continue")}
         </ButtonPrimary>
@@ -68,7 +68,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
           <ButtonPrimary
             muted
             onClick={() => setStep(0)}
-            prepend={<Icon muted icon="arrow-left" />}
+            prepend={<Icon muted name="arrow-left" />}
           >
             {t("install.step1.back")}
           </ButtonPrimary>
@@ -89,14 +89,14 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
         />
         <ButtonPrimary
           onClick={handleSubmit(pingServer)}
-          append={<Icon icon="arrow-right" />}
+          append={<Icon name="arrow-right" />}
         >
           {t("install.step1.continue")}
         </ButtonPrimary>
         <ButtonPrimary
           muted
           onClick={() => setStep(1)}
-          prepend={<Icon muted icon="arrow-left" />}
+          prepend={<Icon muted name="arrow-left" />}
         >
           {t("install.step1.back")}
         </ButtonPrimary>

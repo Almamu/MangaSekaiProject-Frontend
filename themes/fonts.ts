@@ -21,7 +21,7 @@ const FontNames = {
   Poppins_900Black_Italic: "Poppins_900Black_Italic",
 };
 
-export const Fonts = {
+const Fonts = {
   Light: FontNames.Poppins_300Light,
   Regular: FontNames.Poppins_400Regular,
   Medium: FontNames.Poppins_500Medium,
@@ -33,25 +33,31 @@ export const FontStyles = StyleSheet.create({
   light: {
     fontSize: 20,
     fontFamily: Fonts.Light,
+    fontWeight: "300",
   },
   regular: {
     fontSize: 20,
     fontFamily: Fonts.Regular,
+    fontWeight: "400",
   },
   medium: {
     fontSize: 20,
     fontFamily: Fonts.Medium,
+    fontWeight: "500",
   },
   bold: {
     fontSize: 20,
     fontFamily: Fonts.Bold,
+    fontWeight: "700",
   },
   heavy: {
     fontSize: 20,
     fontFamily: Fonts.Heavy,
+    fontWeight: "900",
   },
   title: {
     fontSize: 24,
     fontFamily: Fonts.Medium,
+    fontWeight: "500",
   },
 });

@@ -1,12 +1,5 @@
 import { PropsWithChildren, ReactNode } from "react";
-import {
-  Modal as RNModal,
-  ModalBaseProps,
-  StyleProp,
-  ViewStyle,
-  StyleSheet,
-  Pressable,
-} from "react-native";
+import { ModalBaseProps, StyleProp, ViewStyle, Pressable } from "react-native";
 import {
   HorizontalLayout,
   ScreenRootView,
@@ -15,6 +8,7 @@ import {
 import { useTheme } from "@react-navigation/native";
 import { Title } from "@/components/ui/Text";
 import { Icon } from "@/components/ui/Icon";
+import styled from "styled-components/native";
 
 type Props = {
   close: () => void;
@@ -22,6 +16,22 @@ type Props = {
   title?: string;
   beforeElement?: ReactNode;
 } & Omit<ModalBaseProps, "onRequestClose">;
+
+const RNModal = styled.Modal`
+  width: 100%;
+  height: 100%;
+`;
+
+const Container = styled(VerticalLayout)`
+  border-radius: 15px;
+  max-width: 450px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 30px;
+  background-color: ${({ theme: { colors } }) => colors.modalBackground};
+`;
 
 export function Modal({
   style,
@@ -37,47 +47,23 @@ export function Modal({
 
   return (
     <RNModal
-      style={[styles.modal]}
       onRequestClose={close}
       animationType={animationType}
       transparent={transparent}
       {...props}
     >
       <ScreenRootView style={{ backgroundColor: `${colors.background}B0` }}>
-        <VerticalLayout
-          style={StyleSheet.flatten([
-            styles.container,
-            style,
-            { backgroundColor: colors.modalBackground },
-          ])}
-        >
+        <Container style={style}>
           <HorizontalLayout>
             {beforeElement}
             <Title style={{ flexGrow: 1, textAlign: "center" }}>{title}</Title>
             <Pressable onPress={close}>
-              <Icon icon="close" />
+              <Icon name="close" />
             </Pressable>
           </HorizontalLayout>
           {children}
-        </VerticalLayout>
+        </Container>
       </ScreenRootView>
     </RNModal>
   );
 }
-
-const styles = StyleSheet.create({
-  modal: {
-    width: "100%",
-    height: "100%",
-  },
-  container: {
-    borderRadius: 15,
-    maxWidth: 450,
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-  },
-});

@@ -4,12 +4,10 @@ import styled from "styled-components/native";
 
 type IconList<T> = T extends ExpoIconList<infer U, infer _> ? U : never;
 
-export const Icon = styled(FontAwesome).attrs<{
+export const Icon = styled(FontAwesome)<{
   muted?: boolean;
-  icon: IconList<typeof FontAwesome>;
-}>(({ icon }) => ({
-  name: icon,
-}))`
+  name: IconList<typeof FontAwesome>;
+}>`
   color: ${({ muted, theme: { colors } }) =>
     muted ? colors.textDark : colors.textLight};
   font-size: 20px;

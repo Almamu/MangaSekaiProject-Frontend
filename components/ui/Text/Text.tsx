@@ -1,21 +1,7 @@
-import { Text as RNText, StyleSheet } from "react-native";
-import { TextProps } from "react-native/Libraries/Text/Text";
-import { useTheme } from "@react-navigation/native";
-import { FontStyles } from "@/themes/fonts";
+import styled from "styled-components/native";
 
-export function Text({ style, children, ...props }: TextProps) {
-  const { colors } = useTheme();
-
-  return (
-    <RNText
-      style={StyleSheet.flatten([
-        { color: colors.textBackground },
-        FontStyles.light,
-        style,
-      ])}
-      {...props}
-    >
-      {children}
-    </RNText>
-  );
-}
+export const Text = styled.Text`
+  color: ${({ theme: { colors } }) => colors.textBackground};
+  font-family: ${({ theme: { fonts } }) => fonts.light.fontFamily};
+  font-size: ${({ theme: { fonts } }) => fonts.light.fontSize};
+`;

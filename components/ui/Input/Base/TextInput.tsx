@@ -1,16 +1,12 @@
 import {
-  StyleSheet,
-  TextInput as RNTextInput,
-  View,
   StyleProp,
   ViewStyle,
-  Pressable,
   TextStyle,
   TextInputProps as RNTextInputProps,
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import { Fonts } from "@/themes/fonts";
 import React from "react";
+import styled from "styled-components/native";
 
 export type TextInputProps = {
   style?: StyleProp<ViewStyle>;
@@ -22,6 +18,36 @@ export type TextInputProps = {
   prependPress?: () => void;
   appendPress?: () => void;
 } & Omit<RNTextInputProps, "style">;
+
+const Container = styled.View`
+  border: 2px solid ${({ theme: { colors } }) => colors.primary};
+  background-color: ${({ theme: { colors } }) => colors.primary100};
+  flex-direction: row;
+  gap: 10px;
+  align-self: stretch;
+  border-radius: 5px;
+`;
+
+const RNTextInput = styled.TextInput`
+  flex-grow: 1;
+  outline-style: none;
+  padding: 10px;
+  /*
+   * here to prevent issues with the web version, due to font size the input gets bigger
+   * there's some minimum size established in browsers that make it go nuts a little bit
+   * and this handles that
+   */
+  width: 0;
+  font-size: 16px;
+  font-family: ${({ theme: { fonts } }) => fonts.regular.fontFamily};
+`;
+
+const AppendPressable = styled.Pressable`
+  background-color: ${({ theme: { colors } }) => colors.primary};
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+`;
 
 export function TextInput({
   style,
@@ -37,69 +63,22 @@ export function TextInput({
   const { colors } = useTheme();
 
   return (
-    <View
-      style={StyleSheet.flatten([
-        styles.parent,
-        { borderColor: colors.primary, backgroundColor: colors.primary100 },
-        style,
-      ])}
-    >
+    <Container style={style}>
       {prepend && (
-        <Pressable
-          onPress={prependPress}
-          style={StyleSheet.flatten([
-            styles.append,
-            { backgroundColor: colors.primary },
-            prependStyle,
-          ])}
-        >
+        <AppendPressable onPress={prependPress} style={prependStyle}>
           {prepend}
-        </Pressable>
+        </AppendPressable>
       )}
       <RNTextInput
-        style={StyleSheet.flatten([styles.text, inputStyle])}
+        style={inputStyle}
         placeholderTextColor={colors.textBackground}
         {...props}
       ></RNTextInput>
       {append && (
-        <Pressable
-          onPress={appendPress}
-          style={StyleSheet.flatten([
-            styles.append,
-            { backgroundColor: colors.primary },
-            appendStyle,
-          ])}
-        >
+        <AppendPressable onPress={appendPress} style={appendStyle}>
           {append}
-        </Pressable>
+        </AppendPressable>
       )}
-    </View>
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  parent: {
-    borderWidth: 2,
-    flexDirection: "row",
-    gap: 10,
-    alignSelf: "stretch",
-    borderRadius: 5,
-  },
-  text: {
-    flexGrow: 1,
-    // @ts-expect-error outlineStyle only exists for react-native-web
-    outlineStyle: "none",
-    padding: 10,
-    // here to prevent issues with web version, due to font size the input gets bigger
-    // there's some minimum size established in browsers that make it go nuts a little bit
-    // and this handles that
-    width: 0,
-    fontSize: 16,
-    fontFamily: Fonts.Normal,
-  },
-  append: {
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 10,
-  },
-});

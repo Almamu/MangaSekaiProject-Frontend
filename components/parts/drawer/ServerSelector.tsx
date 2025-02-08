@@ -62,7 +62,7 @@ const TitleEntry = ({ expanded, setExpanded }: TitleEntryProps) => {
           {activeServer?.friendlyName ?? activeServer?.address}
         </Text>
 
-        <Icon icon={expanded ? "chevron-up" : "chevron-down"} />
+        <Icon name={expanded ? "chevron-up" : "chevron-down"} />
       </HorizontalLayout>
     </Pressable>
   );
@@ -87,7 +87,7 @@ const AddServer = () => {
       <HorizontalLayout>
         <Text style={{ flex: 1, color: colors.textDark }}>Añadir servidor</Text>
         <Pressable>
-          <Icon icon="plus" />
+          <Icon name="plus" />
         </Pressable>
       </HorizontalLayout>
     </Pressable>
