@@ -3,7 +3,7 @@ import {
   TextInput as BaseTextInput,
   TextInputProps,
 } from "@/components/ui/Input/Base/TextInput";
-import { useTheme } from "@react-navigation/native";
+import { useTheme } from "styled-components/native";
 import { NativeSyntheticEvent } from "react-native/Libraries/Types/CoreEventTypes";
 import { TextInputFocusEventData } from "react-native/Libraries/Components/TextInput/TextInput";
 

@@ -1,5 +1,5 @@
 import { ActivityIndicator, ActivityIndicatorProps } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { useTheme } from "styled-components/native";
 
 type Props = Omit<ActivityIndicatorProps, "color">;
 

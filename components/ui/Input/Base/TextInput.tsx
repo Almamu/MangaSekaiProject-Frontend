@@ -4,7 +4,7 @@ import {
   TextStyle,
   TextInputProps as RNTextInputProps,
 } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { useTheme } from "styled-components/native";
 import React from "react";
 import styled from "styled-components/native";
 

@@ -1,46 +1,40 @@
-import { PropsWithChildren } from "react";
+import "styled-components";
+import "styled-components/native";
+import { FontStyle } from "@react-navigation/native";
 
-declare module "@react-navigation/native" {
-  export function ThemeProvider(props: PropsWithChildren<{ value: Theme }>);
-  export function useTheme(): NativeTheme;
-
-  // WARNING: HAVE TO KEEP UP TO DATE WITH ORIGINAL DEFINITION TO ADD EXTRA INFO...
-  type FontStyle = {
-    fontFamily: string;
-    fontWeight:
-      | "normal"
-      | "bold"
-      | "100"
-      | "200"
-      | "300"
-      | "400"
-      | "500"
-      | "600"
-      | "700"
-      | "800"
-      | "900";
-    fontSize: number;
+interface BaseTheme {
+  dark: boolean;
+  colors: {
+    primary: string;
+    primary100: string;
+    textLight: string;
+    textDark: string;
+    background: string;
+    textBackground: string;
+    analogous2: string;
+    error: string;
+    modalBackground: string;
+    card: string;
+    text: string;
+    border: string;
+    notification: string;
   };
-  export interface NativeTheme {
-    dark: boolean;
-    colors: {
-      primary: string;
-      primary100: string;
-      textLight: string;
-      textDark: string;
-      background: string;
-      textBackground: string;
-      analogous2: string;
-      error: string;
-      modalBackground: string;
-    };
-    fonts: {
-      regular: FontStyle;
-      medium: FontStyle;
-      bold: FontStyle;
-      heavy: FontStyle;
-    };
-  }
+  fonts: {
+    light: FontStyle;
+    regular: FontStyle;
+    medium: FontStyle;
+    bold: FontStyle;
+    heavy: FontStyle;
+  };
+}
+s;
 
-  export type Theme = NativeTheme;
+declare module "styled-components" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  export interface DefaultTheme extends BaseTheme {}
+}
+
+declare module "styled-components/native" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  export interface DefaultTheme extends BaseTheme {}
 }

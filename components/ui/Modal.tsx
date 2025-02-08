@@ -5,7 +5,7 @@ import {
   ScreenRootView,
   VerticalLayout,
 } from "@/components/ui/View";
-import { useTheme } from "@react-navigation/native";
+import { useTheme } from "styled-components/native";
 import { Title } from "@/components/ui/Text";
 import { Icon } from "@/components/ui/Icon";
 import styled from "styled-components/native";

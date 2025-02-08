@@ -1,5 +1,5 @@
 import { Pressable, Text } from "react-native";
-import { useTheme } from "@react-navigation/native";
+import { useTheme } from "styled-components/native";
 import { useActiveServer } from "@/hooks/useActiveServer";
 import { HorizontalLayout, VerticalLayout } from "@/components/ui/View";
 import { Icon } from "@/components/ui/Icon";
