@@ -19,6 +19,7 @@ import { Body } from "@/domain/backend";
 import { useServerSettings } from "@/hooks/useServerSettings";
 import { useAbortSignal } from "@/hooks/useAbortSignal";
 import { useRouter } from "expo-router";
+import { Temporal } from "temporal-polyfill";
 
 enum LoadingStep {
   WAITING = "WAITING",
@@ -58,7 +59,11 @@ export default function Step1() {
         // everything went right, save it
         const guid = serverSettings.actions.addServer(form.address);
 
-        serverSettings.actions.setToken(guid, result.token);
+        serverSettings.actions.setToken(
+          guid,
+          result.token,
+          Temporal.Now.instant().epochSeconds + result.expires_in
+        );
         serverSettings.actions.setActiveServer(guid);
         // now take the user to the home page
         router.replace("/home/dashboard");

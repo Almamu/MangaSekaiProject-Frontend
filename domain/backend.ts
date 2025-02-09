@@ -295,6 +295,7 @@ export class Client extends ApiUrlProvider {
      * @return List of series
      */
     listSeries(page?: number | undefined, perPage?: number | undefined, signal?: AbortSignal): Promise<SeriesListPaginated> {
+        console.log("called series list");
         let url_ = this.baseUrl + "/api/v1/series?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");

@@ -5,9 +5,11 @@ import {
   useEffect,
   useMemo,
   useReducer,
+  useState,
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
+import { Text } from "@/components/ui/Text";
 
 const STATE_KEY = "@Server:settings";
 const DEFAULT_STATE: ServerSettingsType = {
@@ -18,6 +20,7 @@ export type ServerEntry = {
   guid: string;
   address: string;
   token?: string;
+  tokenExpiration?: number;
   friendlyName?: string;
 };
 
@@ -30,7 +33,10 @@ type ServerSettingsActions =
       type: "ADD_SERVER";
       payload: { guid: string; address: string };
     }
-  | { type: "SET_USER_TOKEN"; payload: { guid: string; token: string } }
+  | {
+      type: "SET_USER_TOKEN";
+      payload: { guid: string; token: string; expiration: number };
+    }
   | { type: "SET_STATE"; payload: ServerSettingsType }
   | { type: "SET_ACTIVE_SERVER"; payload: { guid: string } }
   | { type: "REMOVE_SERVER"; payload: { guid: string } };
@@ -40,7 +46,7 @@ type ServerSettingsContextType = {
   actions: {
     addServer: (address: string) => string;
     removeServer: (guid: string) => void;
-    setToken: (guid: string, token: string) => void;
+    setToken: (guid: string, token: string, expiration: number) => void;
     setActiveServer: (guid: string) => void;
   };
 };
@@ -71,6 +77,7 @@ function serverSettingsReducer(
           {
             ...state.servers[index],
             token: action.payload.token,
+            tokenExpiration: action.payload.expiration,
           },
           ...state.servers.slice(index + 1),
         ],
@@ -117,8 +124,11 @@ export function ServerSettingsContextProvider({ children }: PropsWithChildren) {
       removeServer: (guid: string) => {
         dispatch({ type: "REMOVE_SERVER", payload: { guid } });
       },
-      setToken: (guid: string, token: string) => {
-        dispatch({ type: "SET_USER_TOKEN", payload: { guid, token } });
+      setToken: (guid: string, token: string, expiration: number) => {
+        dispatch({
+          type: "SET_USER_TOKEN",
+          payload: { guid, token, expiration },
+        });
       },
       setActiveServer: (guid: string) => {
         dispatch({
@@ -130,6 +140,7 @@ export function ServerSettingsContextProvider({ children }: PropsWithChildren) {
     []
   );
   const value = useMemo(() => ({ state, actions }), [state, actions]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const getState = async () => {
@@ -142,12 +153,18 @@ export function ServerSettingsContextProvider({ children }: PropsWithChildren) {
       dispatch({ type: "SET_STATE", payload: JSON.parse(state) });
     };
 
-    getState();
+    // TODO: CATCH ERRORS
+    getState().then(() => setLoading(false));
   }, []);
 
   useEffect(() => {
     AsyncStorage.setItem(STATE_KEY, JSON.stringify(state));
   }, [state]);
+
+  if (loading) {
+    // TODO: SHOW LOADING SCREEN
+    return <Text>Loading settings...</Text>;
+  }
 
   return (
     <ServerSettingsContext.Provider value={value}>

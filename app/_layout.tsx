@@ -1,4 +1,4 @@
-import { SplashScreen } from "expo-router";
+import { Slot, SplashScreen } from "expo-router";
 
 import { init } from "@/i18n";
 import React from "react";
@@ -14,7 +14,9 @@ if (typeof window !== "undefined") {
 export default function Root() {
   return (
     <GestureHandlerRootView>
-      <AppRoot />
+      <AppRoot>
+        <Slot />
+      </AppRoot>
     </GestureHandlerRootView>
   );
 }
