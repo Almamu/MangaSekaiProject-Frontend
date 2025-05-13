@@ -20,6 +20,10 @@ export const translation: Translations = {
       modal: {
         title: "Setup server",
       },
+      status: {
+        WAITING: "Waitings",
+        AUTHENTICATING: "Authenticating",
+      },
     },
   },
 };

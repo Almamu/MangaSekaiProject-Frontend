@@ -1,12 +1,13 @@
 import { PropsWithChildren, ReactNode } from "react";
-import { ModalBaseProps, StyleProp, ViewStyle, Pressable } from "react-native";
 import {
-  HorizontalLayout,
-  ScreenRootView,
-  VerticalLayout,
-} from "@/components/ui/View";
-import { useTheme } from "styled-components/native";
-import { Title } from "@/components/ui/Text";
+  ModalBaseProps,
+  StyleProp,
+  ViewStyle,
+  Pressable,
+  View,
+} from "react-native";
+import { ScreenRootView } from "@/components/ui/View";
+import { TitleCenter } from "@/components/ui/Text";
 import { Icon } from "@/components/ui/Icon";
 import styled from "styled-components/native";
 
@@ -22,11 +23,24 @@ const RNModal = styled.Modal`
   height: 100%;
 `;
 
-const Container = styled(VerticalLayout)`
+const ModalContainer = styled(ScreenRootView)`
+  background-color: ${({ theme: { colors } }) => colors.background}B0;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Header = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const Container = styled.View`
   border-radius: 15px;
   max-width: 450px;
   width: 100%;
   display: flex;
+  align-self: center;
   align-items: center;
   justify-content: center;
   padding: 15px 30px;
@@ -43,8 +57,6 @@ export function Modal({
   title = "",
   ...props
 }: PropsWithChildren<Props>) {
-  const { colors } = useTheme();
-
   return (
     <RNModal
       onRequestClose={close}
@@ -52,18 +64,18 @@ export function Modal({
       transparent={transparent}
       {...props}
     >
-      <ScreenRootView style={{ backgroundColor: `${colors.background}B0` }}>
+      <ModalContainer>
         <Container style={style}>
-          <HorizontalLayout>
-            {beforeElement}
-            <Title style={{ flexGrow: 1, textAlign: "center" }}>{title}</Title>
+          <Header>
+            {beforeElement && beforeElement}
+            <TitleCenter style={{ flexGrow: 1 }}>{title}</TitleCenter>
             <Pressable onPress={close}>
               <Icon name="close" />
             </Pressable>
-          </HorizontalLayout>
-          {children}
+          </Header>
+          <View>{children}</View>
         </Container>
-      </ScreenRootView>
+      </ModalContainer>
     </RNModal>
   );
 }

@@ -2,25 +2,26 @@ import { useServerSettings } from "@/hooks/useServerSettings";
 import { Redirect, Slot } from "expo-router";
 import { useWindowDimensions } from "react-native";
 import { MobileDashboard } from "@/components/parts/layouts/MobileDashboard";
-import styled from "styled-components";
+import styled from "styled-components/native";
 import { useState } from "react";
+import { HorizontalLayout, VerticalLayout } from "@/components/ui/View";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
+const Container = styled(HorizontalLayout)`
+  align-items: flex-start;
   flex-grow: 1;
 `;
 
-const LeftPanel = styled.div<{ $expanded: boolean }>`
-  width: ${({ $expanded }) => ($expanded ? "360px" : "0px")};
+const LeftPanel = styled(VerticalLayout)<{ $expanded: boolean }>`
+  width: ${({ $expanded }) => ($expanded ? "480px" : "0px")};
   border-right: 1px solid ${({ theme }) => theme.colors.primary100};
   background-color: ${({ theme }) => theme.colors.primary};
+  flex-shrink: 0;
+  min-height: 100%;
 `;
 
-const ContentPanel = styled.div`
-  flex-grow: 1;
+const ContentPanel = styled(VerticalLayout)`
   padding: 6px;
+  flex-shrink: 1;
 `;
 
 export default function Layout() {

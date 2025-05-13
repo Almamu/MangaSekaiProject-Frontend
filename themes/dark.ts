@@ -1,5 +1,5 @@
 import { FontStyles } from "@/themes/fonts";
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from "styled-components/native";
 
 export const DarkTheme: DefaultTheme = {
   dark: true,
@@ -19,4 +19,10 @@ export const DarkTheme: DefaultTheme = {
     notification: "#9476CD",
   },
   fonts: FontStyles,
+  sizes: {
+    cover: {
+      width: 160,
+      height: 250,
+    },
+  },
 };

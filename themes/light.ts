@@ -1,5 +1,5 @@
 import { FontStyles } from "@/themes/fonts";
-import { DefaultTheme } from "styled-components";
+import { DefaultTheme } from "styled-components/native";
 
 export const LightTheme: DefaultTheme = {
   dark: false,
@@ -19,4 +19,10 @@ export const LightTheme: DefaultTheme = {
     notification: "#9476CD",
   },
   fonts: FontStyles,
+  sizes: {
+    cover: {
+      width: 160,
+      height: 250,
+    },
+  },
 };

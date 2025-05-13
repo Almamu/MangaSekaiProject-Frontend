@@ -1,13 +1,13 @@
 import { createContext, PropsWithChildren, useContext } from "react";
 import axios, { AxiosInstance } from "axios";
 
-export const AxiosContext = createContext<AxiosInstance>(axios.create());
+const instance = axios.create();
 
-const axiosValue = axios.create();
+export const AxiosContext = createContext<AxiosInstance>(instance);
 
 export function AxiosContextProvider({ children }: PropsWithChildren) {
   return (
-    <AxiosContext.Provider value={axiosValue}>{children}</AxiosContext.Provider>
+    <AxiosContext.Provider value={instance}>{children}</AxiosContext.Provider>
   );
 }
 

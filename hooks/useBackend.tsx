@@ -13,7 +13,7 @@ import { useServerSettings } from "@/hooks/useServerSettings";
 import { AxiosError, InternalAxiosRequestConfig } from "axios";
 import { useActiveServer } from "@/hooks/useActiveServer";
 import { Temporal } from "temporal-polyfill";
-import { Text } from "@/components/ui/Text";
+import { LightText } from "@/components/ui/Text";
 
 interface ContextProps {
   overrideServer(address: string, token?: string): void;
@@ -51,24 +51,25 @@ export function BackendContextProvider({ children }: PropsWithChildren) {
     };
 
     // setup new interceptors to add the token
-    const interceptor = axios.interceptors.request.use(
+    const requestInterceptor = axios.interceptors.request.use(
       async (config: InternalAxiosRequestConfig) => {
-        config.headers = config.headers ?? {};
-
         // only wait for requests not to the refresh endpoint
         if (status.refreshCall && !config.url?.endsWith("/refresh")) {
           await status.refreshCall;
         }
 
         if (serverToken && !config.headers.Authorization) {
-          config.headers.Authorization = `Bearer ${serverToken}`;
+          config.headers.set("Authorization", `Bearer ${serverToken}`);
         }
 
         return config;
-      },
+      }
+    );
+    const responseInterceptor = axios.interceptors.response.use(
+      undefined,
       async (error: AxiosError) => {
         // request failed, is it because authentication?
-        if (error.code !== "401" || !activeServer) {
+        if (error.response?.status !== 401 || !activeServer) {
           return Promise.reject(error);
         }
 
@@ -91,7 +92,7 @@ export function BackendContextProvider({ children }: PropsWithChildren) {
         );
 
         status.refreshCall = undefined;
-        return refresh;
+        return axios(error.response.config);
       }
     );
 
@@ -99,7 +100,8 @@ export function BackendContextProvider({ children }: PropsWithChildren) {
 
     return () => {
       // remove the added interceptor
-      axios.interceptors.request.eject(interceptor);
+      axios.interceptors.request.eject(requestInterceptor);
+      axios.interceptors.response.eject(responseInterceptor);
     };
   }, [axios, client, serverSettings.actions, activeServer, serverToken]);
 
@@ -107,7 +109,7 @@ export function BackendContextProvider({ children }: PropsWithChildren) {
   // so any call under here to useQuery will run before the interceptor is registered
   if (loading) {
     // TODO: SHOW LOADING SCREEN
-    return <Text>Loading settings...</Text>;
+    return <LightText>Loading settings...</LightText>;
   }
 
   return (

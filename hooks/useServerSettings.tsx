@@ -9,7 +9,7 @@ import {
 } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { v4 as uuidv4 } from "uuid";
-import { Text } from "@/components/ui/Text";
+import { LightText } from "@/components/ui/Text";
 
 const STATE_KEY = "@Server:settings";
 const DEFAULT_STATE: ServerSettingsType = {
@@ -163,7 +163,7 @@ export function ServerSettingsContextProvider({ children }: PropsWithChildren) {
 
   if (loading) {
     // TODO: SHOW LOADING SCREEN
-    return <Text>Loading settings...</Text>;
+    return <LightText>Loading settings...</LightText>;
   }
 
   return (

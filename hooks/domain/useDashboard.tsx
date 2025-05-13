@@ -1,6 +1,7 @@
 import { useActiveServer } from "@/hooks/useActiveServer";
 import { useBackendClient } from "@/hooks/useBackend";
-import { useQuery } from "@tanstack/react-query";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
+import { wait } from "@/utils/promise-utils";
 
 export const useDashboard = () => {
   const activeServer = useActiveServer();
@@ -8,11 +9,14 @@ export const useDashboard = () => {
 
   return useQuery({
     queryKey: ["dashboard", activeServer?.guid],
-    queryFn: async () => {
-      const result = await Promise.all([backend.listSeries()]);
+    queryFn: async (context: QueryFunctionContext) => {
+      const result = await Promise.all([
+        backend.recentlyUpdatedSeries(context.signal),
+        wait(500000),
+      ]);
 
       return {
-        series: result[0],
+        recentlyUpdated: result[0],
       };
     },
   });

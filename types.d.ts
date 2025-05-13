@@ -1,4 +1,3 @@
-import "styled-components";
 import "styled-components/native";
 import { FontStyle } from "@react-navigation/native";
 
@@ -25,13 +24,15 @@ interface BaseTheme {
     medium: FontStyle;
     bold: FontStyle;
     heavy: FontStyle;
+    title: FontStyle;
+    small: FontStyle;
   };
-}
-s;
-
-declare module "styled-components" {
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  export interface DefaultTheme extends BaseTheme {}
+  sizes: {
+    cover: {
+      width: number;
+      height: number;
+    };
+  };
 }
 
 declare module "styled-components/native" {

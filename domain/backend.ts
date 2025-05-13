@@ -295,7 +295,6 @@ export class Client extends ApiUrlProvider {
      * @return List of series
      */
     listSeries(page?: number | undefined, perPage?: number | undefined, signal?: AbortSignal): Promise<SeriesListPaginated> {
-        console.log("called series list");
         let url_ = this.baseUrl + "/api/v1/series?";
         if (page === null)
             throw new Error("The parameter 'page' cannot be null.");
@@ -349,6 +348,64 @@ export class Client extends ApiUrlProvider {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<SeriesListPaginated>(null as any);
+    }
+
+    /**
+     * @return List of series
+     */
+    recentlyUpdatedSeries(signal?: AbortSignal): Promise<SeriesListItem[]> {
+        let url_ = this.baseUrl + "/api/v1/series/recentlyUpdated";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            signal
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processRecentlyUpdatedSeries(_response);
+        });
+    }
+
+    protected processRecentlyUpdatedSeries(response: AxiosResponse): Promise<SeriesListItem[]> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (const k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(SeriesListItem.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return Promise.resolve<SeriesListItem[]>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<SeriesListItem[]>(null as any);
     }
 
     /**
@@ -676,9 +733,9 @@ export class TokenResponse implements ITokenResponse {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.token = _data["token"];
-            this.token_type = _data["token_type"];
-            this.expires_in = _data["expires_in"];
+            this.token = _data["token"] !== undefined ? _data["token"] : <any>null;
+            this.token_type = _data["token_type"] !== undefined ? _data["token_type"] : <any>null;
+            this.expires_in = _data["expires_in"] !== undefined ? _data["expires_in"] : <any>null;
         }
     }
 
@@ -695,9 +752,9 @@ export class TokenResponse implements ITokenResponse {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["token"] = this.token;
-        data["token_type"] = this.token_type;
-        data["expires_in"] = this.expires_in;
+        data["token"] = this.token !== undefined ? this.token : <any>null;
+        data["token_type"] = this.token_type !== undefined ? this.token_type : <any>null;
+        data["expires_in"] = this.expires_in !== undefined ? this.expires_in : <any>null;
         return data;
     }
 }
@@ -731,7 +788,7 @@ export class ErrorResponse implements IErrorResponse {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.message = _data["message"];
+            this.message = _data["message"] !== undefined ? _data["message"] : <any>null;
         }
     }
 
@@ -748,7 +805,7 @@ export class ErrorResponse implements IErrorResponse {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["message"] = this.message;
+        data["message"] = this.message !== undefined ? this.message : <any>null;
         return data;
     }
 }
@@ -799,10 +856,13 @@ export class ChapterListPaginated implements IChapterListPaginated {
                 for (let item of _data["data"])
                     this.data!.push(Chapter.fromJS(item));
             }
-            this.current_page = _data["current_page"];
-            this.records_per_page = _data["records_per_page"];
-            this.last_page = _data["last_page"];
-            this.total = _data["total"];
+            else {
+                this.data = <any>null;
+            }
+            this.current_page = _data["current_page"] !== undefined ? _data["current_page"] : <any>null;
+            this.records_per_page = _data["records_per_page"] !== undefined ? _data["records_per_page"] : <any>null;
+            this.last_page = _data["last_page"] !== undefined ? _data["last_page"] : <any>null;
+            this.total = _data["total"] !== undefined ? _data["total"] : <any>null;
         }
     }
 
@@ -824,10 +884,10 @@ export class ChapterListPaginated implements IChapterListPaginated {
             for (let item of this.data)
                 data["data"].push(item.toJSON());
         }
-        data["current_page"] = this.current_page;
-        data["records_per_page"] = this.records_per_page;
-        data["last_page"] = this.last_page;
-        data["total"] = this.total;
+        data["current_page"] = this.current_page !== undefined ? this.current_page : <any>null;
+        data["records_per_page"] = this.records_per_page !== undefined ? this.records_per_page : <any>null;
+        data["last_page"] = this.last_page !== undefined ? this.last_page : <any>null;
+        data["total"] = this.total !== undefined ? this.total : <any>null;
         return data;
     }
 }
@@ -864,9 +924,9 @@ export class Chapter implements IChapter {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.id = _data["id"];
-            this.number = _data["number"];
-            this.pages_count = _data["pages_count"];
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.number = _data["number"] !== undefined ? _data["number"] : <any>null;
+            this.pages_count = _data["pages_count"] !== undefined ? _data["pages_count"] : <any>null;
         }
     }
 
@@ -883,9 +943,9 @@ export class Chapter implements IChapter {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["id"] = this.id;
-        data["number"] = this.number;
-        data["pages_count"] = this.pages_count;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["number"] = this.number !== undefined ? this.number : <any>null;
+        data["pages_count"] = this.pages_count !== undefined ? this.pages_count : <any>null;
         return data;
     }
 }
@@ -919,8 +979,8 @@ export class Genre implements IGenre {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.id = _data["id"];
-            this.name = _data["name"];
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
         }
     }
 
@@ -937,8 +997,8 @@ export class Genre implements IGenre {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["id"] = this.id;
-        data["name"] = this.name;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
         return data;
     }
 }
@@ -957,7 +1017,7 @@ export class Series implements ISeries {
     pages_count!: number;
     description!: string;
     synced!: boolean;
-    image_url!: string;
+    image_url!: string | null;
     genres!: Genre[];
     staff!: StaffWithRole[];
     created_at!: DateTime;
@@ -998,25 +1058,31 @@ export class Series implements ISeries {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.chapter_count = _data["chapter_count"];
-            this.pages_count = _data["pages_count"];
-            this.description = _data["description"];
-            this.synced = _data["synced"];
-            this.image_url = _data["image_url"];
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.chapter_count = _data["chapter_count"] !== undefined ? _data["chapter_count"] : <any>null;
+            this.pages_count = _data["pages_count"] !== undefined ? _data["pages_count"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.synced = _data["synced"] !== undefined ? _data["synced"] : <any>null;
+            this.image_url = _data["image_url"] !== undefined ? _data["image_url"] : <any>null;
             if (Array.isArray(_data["genres"])) {
                 this.genres = [] as any;
                 for (let item of _data["genres"])
                     this.genres!.push(Genre.fromJS(item));
+            }
+            else {
+                this.genres = <any>null;
             }
             if (Array.isArray(_data["staff"])) {
                 this.staff = [] as any;
                 for (let item of _data["staff"])
                     this.staff!.push(StaffWithRole.fromJS(item));
             }
-            this.created_at = _data["created_at"] ? DateTime.fromISO(_data["created_at"].toString()) : <any>undefined;
-            this.updated_at = _data["updated_at"] ? DateTime.fromISO(_data["updated_at"].toString()) : <any>undefined;
+            else {
+                this.staff = <any>null;
+            }
+            this.created_at = _data["created_at"] ? DateTime.fromISO(_data["created_at"].toString()) : <any>null;
+            this.updated_at = _data["updated_at"] ? DateTime.fromISO(_data["updated_at"].toString()) : <any>null;
         }
     }
 
@@ -1033,13 +1099,13 @@ export class Series implements ISeries {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["chapter_count"] = this.chapter_count;
-        data["pages_count"] = this.pages_count;
-        data["description"] = this.description;
-        data["synced"] = this.synced;
-        data["image_url"] = this.image_url;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["chapter_count"] = this.chapter_count !== undefined ? this.chapter_count : <any>null;
+        data["pages_count"] = this.pages_count !== undefined ? this.pages_count : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["synced"] = this.synced !== undefined ? this.synced : <any>null;
+        data["image_url"] = this.image_url !== undefined ? this.image_url : <any>null;
         if (Array.isArray(this.genres)) {
             data["genres"] = [];
             for (let item of this.genres)
@@ -1050,8 +1116,8 @@ export class Series implements ISeries {
             for (let item of this.staff)
                 data["staff"].push(item.toJSON());
         }
-        data["created_at"] = this.created_at ? this.created_at.toString() : <any>undefined;
-        data["updated_at"] = this.updated_at ? this.updated_at.toString() : <any>undefined;
+        data["created_at"] = this.created_at ? this.created_at.toString() : <any>null;
+        data["updated_at"] = this.updated_at ? this.updated_at.toString() : <any>null;
         return data;
     }
 }
@@ -1063,7 +1129,7 @@ export interface ISeries {
     pages_count: number;
     description: string;
     synced: boolean;
-    image_url: string;
+    image_url: string | null;
     genres: IGenre[];
     staff: IStaffWithRole[];
     created_at: DateTime;
@@ -1079,7 +1145,7 @@ export class SeriesListItem implements ISeriesListItem {
     pages_count!: number;
     description!: string;
     synced!: boolean;
-    image_url!: string;
+    image_url!: string | null;
     created_at!: DateTime;
     updated_at!: DateTime;
 
@@ -1100,15 +1166,15 @@ export class SeriesListItem implements ISeriesListItem {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.chapter_count = _data["chapter_count"];
-            this.pages_count = _data["pages_count"];
-            this.description = _data["description"];
-            this.synced = _data["synced"];
-            this.image_url = _data["image_url"];
-            this.created_at = _data["created_at"] ? DateTime.fromISO(_data["created_at"].toString()) : <any>undefined;
-            this.updated_at = _data["updated_at"] ? DateTime.fromISO(_data["updated_at"].toString()) : <any>undefined;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.chapter_count = _data["chapter_count"] !== undefined ? _data["chapter_count"] : <any>null;
+            this.pages_count = _data["pages_count"] !== undefined ? _data["pages_count"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.synced = _data["synced"] !== undefined ? _data["synced"] : <any>null;
+            this.image_url = _data["image_url"] !== undefined ? _data["image_url"] : <any>null;
+            this.created_at = _data["created_at"] ? DateTime.fromISO(_data["created_at"].toString()) : <any>null;
+            this.updated_at = _data["updated_at"] ? DateTime.fromISO(_data["updated_at"].toString()) : <any>null;
         }
     }
 
@@ -1125,15 +1191,15 @@ export class SeriesListItem implements ISeriesListItem {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["chapter_count"] = this.chapter_count;
-        data["pages_count"] = this.pages_count;
-        data["description"] = this.description;
-        data["synced"] = this.synced;
-        data["image_url"] = this.image_url;
-        data["created_at"] = this.created_at ? this.created_at.toString() : <any>undefined;
-        data["updated_at"] = this.updated_at ? this.updated_at.toString() : <any>undefined;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["chapter_count"] = this.chapter_count !== undefined ? this.chapter_count : <any>null;
+        data["pages_count"] = this.pages_count !== undefined ? this.pages_count : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["synced"] = this.synced !== undefined ? this.synced : <any>null;
+        data["image_url"] = this.image_url !== undefined ? this.image_url : <any>null;
+        data["created_at"] = this.created_at ? this.created_at.toString() : <any>null;
+        data["updated_at"] = this.updated_at ? this.updated_at.toString() : <any>null;
         return data;
     }
 }
@@ -1145,7 +1211,7 @@ export interface ISeriesListItem {
     pages_count: number;
     description: string;
     synced: boolean;
-    image_url: string;
+    image_url: string | null;
     created_at: DateTime;
     updated_at: DateTime;
 
@@ -1191,10 +1257,13 @@ export class SeriesListPaginated implements ISeriesListPaginated {
                 for (let item of _data["data"])
                     this.data!.push(SeriesListItem.fromJS(item));
             }
-            this.current_page = _data["current_page"];
-            this.records_per_page = _data["records_per_page"];
-            this.last_page = _data["last_page"];
-            this.total = _data["total"];
+            else {
+                this.data = <any>null;
+            }
+            this.current_page = _data["current_page"] !== undefined ? _data["current_page"] : <any>null;
+            this.records_per_page = _data["records_per_page"] !== undefined ? _data["records_per_page"] : <any>null;
+            this.last_page = _data["last_page"] !== undefined ? _data["last_page"] : <any>null;
+            this.total = _data["total"] !== undefined ? _data["total"] : <any>null;
         }
     }
 
@@ -1216,10 +1285,10 @@ export class SeriesListPaginated implements ISeriesListPaginated {
             for (let item of this.data)
                 data["data"].push(item.toJSON());
         }
-        data["current_page"] = this.current_page;
-        data["records_per_page"] = this.records_per_page;
-        data["last_page"] = this.last_page;
-        data["total"] = this.total;
+        data["current_page"] = this.current_page !== undefined ? this.current_page : <any>null;
+        data["records_per_page"] = this.records_per_page !== undefined ? this.records_per_page : <any>null;
+        data["last_page"] = this.last_page !== undefined ? this.last_page : <any>null;
+        data["total"] = this.total !== undefined ? this.total : <any>null;
         return data;
     }
 }
@@ -1259,12 +1328,12 @@ export class Staff implements IStaff {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.image_url = _data["image_url"];
-            this.created_at = _data["created_at"] ? DateTime.fromISO(_data["created_at"].toString()) : <any>undefined;
-            this.updated_at = _data["updated_at"] ? DateTime.fromISO(_data["updated_at"].toString()) : <any>undefined;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.image_url = _data["image_url"] !== undefined ? _data["image_url"] : <any>null;
+            this.created_at = _data["created_at"] ? DateTime.fromISO(_data["created_at"].toString()) : <any>null;
+            this.updated_at = _data["updated_at"] ? DateTime.fromISO(_data["updated_at"].toString()) : <any>null;
         }
     }
 
@@ -1281,12 +1350,12 @@ export class Staff implements IStaff {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["image_url"] = this.image_url;
-        data["created_at"] = this.created_at ? this.created_at.toString() : <any>undefined;
-        data["updated_at"] = this.updated_at ? this.updated_at.toString() : <any>undefined;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["image_url"] = this.image_url !== undefined ? this.image_url : <any>null;
+        data["created_at"] = this.created_at ? this.created_at.toString() : <any>null;
+        data["updated_at"] = this.updated_at ? this.updated_at.toString() : <any>null;
         return data;
     }
 }
@@ -1327,12 +1396,12 @@ export class StaffWithRole implements IStaffWithRole {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.id = _data["id"];
-            this.name = _data["name"];
-            this.description = _data["description"];
-            this.image_url = _data["image_url"];
-            this.created_at = _data["created_at"] ? DateTime.fromISO(_data["created_at"].toString()) : <any>undefined;
-            this.updated_at = _data["updated_at"] ? DateTime.fromISO(_data["updated_at"].toString()) : <any>undefined;
+            this.id = _data["id"] !== undefined ? _data["id"] : <any>null;
+            this.name = _data["name"] !== undefined ? _data["name"] : <any>null;
+            this.description = _data["description"] !== undefined ? _data["description"] : <any>null;
+            this.image_url = _data["image_url"] !== undefined ? _data["image_url"] : <any>null;
+            this.created_at = _data["created_at"] ? DateTime.fromISO(_data["created_at"].toString()) : <any>null;
+            this.updated_at = _data["updated_at"] ? DateTime.fromISO(_data["updated_at"].toString()) : <any>null;
         }
     }
 
@@ -1349,12 +1418,12 @@ export class StaffWithRole implements IStaffWithRole {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["id"] = this.id;
-        data["name"] = this.name;
-        data["description"] = this.description;
-        data["image_url"] = this.image_url;
-        data["created_at"] = this.created_at ? this.created_at.toString() : <any>undefined;
-        data["updated_at"] = this.updated_at ? this.updated_at.toString() : <any>undefined;
+        data["id"] = this.id !== undefined ? this.id : <any>null;
+        data["name"] = this.name !== undefined ? this.name : <any>null;
+        data["description"] = this.description !== undefined ? this.description : <any>null;
+        data["image_url"] = this.image_url !== undefined ? this.image_url : <any>null;
+        data["created_at"] = this.created_at ? this.created_at.toString() : <any>null;
+        data["updated_at"] = this.updated_at ? this.updated_at.toString() : <any>null;
         return data;
     }
 }
@@ -1409,10 +1478,13 @@ export class StaffListPaginated implements IStaffListPaginated {
                 for (let item of _data["data"])
                     this.data!.push(StaffListPaginated.fromJS(item));
             }
-            this.current_page = _data["current_page"];
-            this.records_per_page = _data["records_per_page"];
-            this.last_page = _data["last_page"];
-            this.total = _data["total"];
+            else {
+                this.data = <any>null;
+            }
+            this.current_page = _data["current_page"] !== undefined ? _data["current_page"] : <any>null;
+            this.records_per_page = _data["records_per_page"] !== undefined ? _data["records_per_page"] : <any>null;
+            this.last_page = _data["last_page"] !== undefined ? _data["last_page"] : <any>null;
+            this.total = _data["total"] !== undefined ? _data["total"] : <any>null;
         }
     }
 
@@ -1434,10 +1506,10 @@ export class StaffListPaginated implements IStaffListPaginated {
             for (let item of this.data)
                 data["data"].push(item.toJSON());
         }
-        data["current_page"] = this.current_page;
-        data["records_per_page"] = this.records_per_page;
-        data["last_page"] = this.last_page;
-        data["total"] = this.total;
+        data["current_page"] = this.current_page !== undefined ? this.current_page : <any>null;
+        data["records_per_page"] = this.records_per_page !== undefined ? this.records_per_page : <any>null;
+        data["last_page"] = this.last_page !== undefined ? this.last_page : <any>null;
+        data["total"] = this.total !== undefined ? this.total : <any>null;
         return data;
     }
 }
@@ -1473,8 +1545,8 @@ export class Body implements IBody {
                 if (_data.hasOwnProperty(property))
                     this[property] = _data[property];
             }
-            this.username = _data["username"];
-            this.password = _data["password"];
+            this.username = _data["username"] !== undefined ? _data["username"] : <any>null;
+            this.password = _data["password"] !== undefined ? _data["password"] : <any>null;
         }
     }
 
@@ -1491,8 +1563,8 @@ export class Body implements IBody {
             if (this.hasOwnProperty(property))
                 data[property] = this[property];
         }
-        data["username"] = this.username;
-        data["password"] = this.password;
+        data["username"] = this.username !== undefined ? this.username : <any>null;
+        data["password"] = this.password !== undefined ? this.password : <any>null;
         return data;
     }
 }

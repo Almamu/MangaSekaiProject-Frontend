@@ -11,7 +11,9 @@ export const useAbortSignal = () => {
     return () => {
       abortController.abort();
     };
-  }, [abortController]);
+    // disabled because the idea is that this only happens once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return abortController.signal;
 };

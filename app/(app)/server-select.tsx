@@ -1,5 +1,5 @@
-import { Text } from "@/components/ui/Text";
+import { LightText } from "@/components/ui/Text";
 
 export default function Index() {
-  return <Text>Testing 123</Text>;
+  return <LightText>Testing 123</LightText>;
 }

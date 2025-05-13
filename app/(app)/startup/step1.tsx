@@ -1,25 +1,32 @@
-import { Platform, View } from "react-native";
 import { Image } from "expo-image";
-import {
-  HorizontalLayout,
-  ScreenRootView,
-  VerticalLayout,
-} from "@/components/ui/View";
-import { Text } from "@/components/ui/Text";
+import { ScreenRootView, VerticalLayout } from "@/components/ui/View";
+import { LightText, LightTextCenter } from "@/components/ui/Text";
 import { t } from "@/i18n";
 import { Modal } from "@/components/ui/Modal";
 import { useCallback, useState } from "react";
 import { Loader } from "@/components/ui/Loader";
 import {
-  ServerForm,
+  SetupForm,
   ServerFormType,
-} from "@/components/parts/startup/step1/ServerForm";
+} from "@/components/parts/startup/step1/SetupForm";
 import { useBackendClient, useBackendContext } from "@/hooks/useBackend";
 import { Body } from "@/domain/backend";
 import { useServerSettings } from "@/hooks/useServerSettings";
 import { useAbortSignal } from "@/hooks/useAbortSignal";
 import { useRouter } from "expo-router";
 import { Temporal } from "temporal-polyfill";
+import styled from "styled-components/native";
+
+const ContentContainer = styled(ScreenRootView)`
+  padding-top: 0;
+  flex-basis: auto;
+  justify-content: flex-end;
+  width: 100%;
+`;
+
+const FormContainer = styled(VerticalLayout)`
+  justify-content: flex-end;
+`;
 
 enum LoadingStep {
   WAITING = "WAITING",
@@ -81,64 +88,40 @@ export default function Step1() {
   // TODO: SUPPORT FOR AUTODETECTING INSTANCES RUNNING ON OUR SAME MACHINE
 
   return (
-    <View style={{ flex: 1, flexGrow: 1 }}>
-      <View>
-        <Image
-          source={require("@/assets/images/mangasekai-logo.png")}
-          contentFit="cover"
-          style={{ height: 500, width: "100%" }}
-        />
-      </View>
-      <ScreenRootView
-        style={{
-          paddingTop: 0,
-          flex: 0,
-          flexGrow: 1,
-          flexBasis: "auto",
-          justifyContent: "flex-end",
-        }}
-      >
-        <VerticalLayout style={{ flexGrow: 1 }}>
-          {loading ? (
-            <>
-              <Loader
-                style={{
-                  transform: [
-                    { scale: Platform.select({ default: 1, web: 5 }) },
-                  ],
-                }}
-                size="large"
+    <VerticalLayout>
+      <Image
+        source={require("@/assets/images/mangasekai-logo.png")}
+        contentFit="cover"
+        style={{ height: 500, width: "100%" }}
+      />
+      <ContentContainer>
+        {loading ? (
+          <>
+            <Loader size="large" />
+            <LightTextCenter>
+              {t(`install.step1.status.${loadingStep}`)}
+            </LightTextCenter>
+            `
+          </>
+        ) : (
+          <>
+            <LightTextCenter>{t("install.step1.welcome")}</LightTextCenter>
+            <FormContainer>
+              <SetupForm
+                pingServer={pingServer}
+                setInfoModalVisible={setInfoModalVisible}
               />
-              <Text>{loadingStep}</Text>
-            </>
-          ) : (
-            <>
-              <HorizontalLayout
-                style={{ flexGrow: 1, alignItems: "flex-start" }}
-              >
-                <Text>{t("install.step1.welcome")}</Text>
-              </HorizontalLayout>
-              <VerticalLayout
-                style={{
-                  maxWidth: Platform.select({ web: 600, default: undefined }),
-                }}
-              >
-                <ServerForm
-                  pingServer={pingServer}
-                  setInfoModalVisible={setInfoModalVisible}
-                />
-              </VerticalLayout>
-            </>
-          )}
-        </VerticalLayout>
-      </ScreenRootView>
+            </FormContainer>
+          </>
+        )}
+      </ContentContainer>
       <Modal
         visible={infoModalVisible}
         close={closeInfoModal}
         title={t("install.step1.infoModal.title")}
       >
-        <Text>{t("install.step1.infoModal.text")}</Text>
+        <LightText>{t("install.step1.infoModal.text")}</LightText>
       </Modal>
-    </View>
+    </VerticalLayout>
   );
 }

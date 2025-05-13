@@ -60,4 +60,9 @@ export const FontStyles = StyleSheet.create({
     fontFamily: Fonts.Medium,
     fontWeight: "500",
   },
+  small: {
+    fontSize: 12,
+    fontFamily: Fonts.Regular,
+    fontWeight: "400",
+  },
 });

@@ -1,7 +1,7 @@
 import { ServerSettingsContextProvider } from "@/hooks/useServerSettings";
 import { AxiosContextProvider } from "@/hooks/useAxios";
 import { BackendContextProvider } from "@/hooks/useBackend";
-import { AppTheme } from "@/components/AppTheme";
+import { AppTheme } from "@/components/parts/AppTheme";
 import React, { PropsWithChildren } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 

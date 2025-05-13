@@ -5,7 +5,7 @@ import {
 } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
 import React, { PropsWithChildren } from "react";
 import { Href, Link } from "expo-router";
-import { Text } from "@/components/ui/Text";
+import { LightText } from "@/components/ui/Text";
 import styled from "styled-components/native";
 
 type LinkProps = { href: Href; method?: "replace" | "push" };
@@ -49,7 +49,7 @@ export function Button({
       >
         <ButtonContainer style={style}>
           {!!prepend && prepend}
-          <Text style={textStyle}>{children}</Text>
+          <LightText style={textStyle}>{children}</LightText>
           {!!append && append}
         </ButtonContainer>
       </Link>
@@ -58,7 +58,7 @@ export function Button({
     return (
       <ButtonContainer style={style} onPress={props.onClick}>
         {!!prepend && prepend}
-        <Text style={textStyle}>{children}</Text>
+        <LightText style={textStyle}>{children}</LightText>
         {!!append && append}
       </ButtonContainer>
     );

@@ -1,17 +1,22 @@
 import { TextInput } from "@/components/ui/Input/Controlled/TextInput";
 import { t } from "@/i18n";
 import { Icon } from "@/components/ui/Icon";
-import { VerticalLayout } from "@/components/ui/View";
 import { ButtonPrimary } from "@/components/ui/Buttons";
 import { useState } from "react";
 import { Platform } from "react-native";
 import { z } from "zod";
 import { useZodForm } from "@/hooks/useZodForm";
+import styled from "styled-components/native";
 
 interface Props {
   setInfoModalVisible: (visible: boolean) => void;
   pingServer: (form: ServerFormType) => Promise<void>;
 }
+
+const Container = styled.View`
+  width: 100%;
+  gap: 8px;
+`;
 
 export const ServerFormValidation = z.object({
   address: z.string().url(),
@@ -21,7 +26,7 @@ export const ServerFormValidation = z.object({
 
 export type ServerFormType = z.infer<typeof ServerFormValidation>;
 
-export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
+export function SetupForm({ pingServer, setInfoModalVisible }: Props) {
   const [step, setStep] = useState(Platform.select({ default: 0, web: 1 }));
   const {
     control,
@@ -34,9 +39,12 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
     password: "password",
   });
 
+  // it's important to keep the form in the dom even tho if it's not visible
+  // otherwise react-hook-form gets a bit out of whack and doesn't properly handle
+  // the different inputs
   return (
     <>
-      <VerticalLayout style={{ display: step === 0 ? "flex" : "none" }}>
+      <Container style={{ display: step === 0 ? undefined : "none" }}>
         <ButtonPrimary
           onClick={() => {
             setStep(1);
@@ -46,8 +54,8 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
         </ButtonPrimary>
 
         <ButtonPrimary href="/">{t("install.step1.scanQR")}</ButtonPrimary>
-      </VerticalLayout>
-      <VerticalLayout style={{ display: step === 1 ? "flex" : "none" }}>
+      </Container>{" "}
+      <Container style={{ display: step === 1 ? undefined : "none" }}>
         <TextInput
           textContentType={"URL"}
           placeholder={t("install.step1.server.address")}
@@ -73,8 +81,8 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
             {t("install.step1.back")}
           </ButtonPrimary>
         )}
-      </VerticalLayout>
-      <VerticalLayout style={{ display: step === 2 ? "flex" : "none" }}>
+      </Container>{" "}
+      <Container style={{ display: step === 2 ? undefined : "none" }}>
         <TextInput
           textContentType="username"
           placeholder={t("install.step1.server.username")}
@@ -100,7 +108,7 @@ export function ServerForm({ pingServer, setInfoModalVisible }: Props) {
         >
           {t("install.step1.back")}
         </ButtonPrimary>
-      </VerticalLayout>
+      </Container>
     </>
   );
 }

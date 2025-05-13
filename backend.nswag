@@ -2,7 +2,7 @@
     "runtime": "Default",
     "documentGenerator": {
         "fromDocument": {
-            "url": "http://localhost:8000/docs/api-docs.json",
+            "url": "http://localhost:8000/docs?api-docs.json",
             "output": null
         }
     },
@@ -15,7 +15,7 @@
             "template": "Axios",
             "promiseType": "Promise",
             "dateTimeType": "Luxon",
-            "nullValue": "Undefined",
+            "nullValue": "null",
             "generateClientClasses": true,
             "generateOptionalParameters": true,
             "exportTypes": true,

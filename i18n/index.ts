@@ -27,6 +27,10 @@ export type Translations = {
       modal: {
         title: string;
       };
+      status: {
+        WAITING: string;
+        AUTHENTICATING: string;
+      };
     };
   };
 };

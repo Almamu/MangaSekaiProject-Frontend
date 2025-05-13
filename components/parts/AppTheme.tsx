@@ -28,7 +28,6 @@ import { Appearance, useColorScheme } from "react-native";
 import { Platform } from "react-native";
 import { ThemeProvider as RNThemeProvider } from "@react-navigation/native";
 import { ThemeProvider as SNThemeProvider } from "styled-components/native";
-import { ThemeProvider as SWThemeProvider } from "styled-components";
 import { AppThemeContext } from "@/hooks/useColorScheme";
 import setColorScheme = Appearance.setColorScheme;
 
@@ -73,40 +72,33 @@ export function AppTheme({ children }: PropsWithChildren) {
   // TODO: HANDLE ERROR
 
   const theme = (overridenScheme || scheme) === "dark" ? DarkTheme : LightTheme;
-  const content = (
-    <AppThemeContext.Provider
-      value={{
-        colorScheme:
-          overridenScheme ??
-          (Platform.OS === "web"
-            ? window.matchMedia &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches
-              ? "dark"
-              : "light"
-            : scheme),
-        overrideColorScheme: (color: "dark" | "light" | null) => {
-          if (Platform.OS !== "web") {
-            setColorScheme(color);
-          }
-
-          setOverridenScheme(color);
-        },
-      }}
-    >
-      {children}
-    </AppThemeContext.Provider>
-  );
 
   return (
     <RNThemeProvider value={theme}>
-      {Platform.select({
-        web: (
-          <SNThemeProvider theme={theme}>
-            <SWThemeProvider theme={theme}>{content}</SWThemeProvider>
-          </SNThemeProvider>
-        ),
-        default: <SNThemeProvider theme={theme}>{content}</SNThemeProvider>,
-      })}
+      <SNThemeProvider theme={theme}>
+        <AppThemeContext.Provider
+          value={{
+            colorScheme:
+              overridenScheme ??
+              (Platform.OS === "web"
+                ? window.matchMedia &&
+                  window.matchMedia("(prefers-color-scheme: dark)").matches
+                  ? "dark"
+                  : "light"
+                : scheme),
+            overrideColorScheme: (color: "dark" | "light" | null) => {
+              if (Platform.OS !== "web") {
+                setColorScheme(color);
+              }
+
+              setOverridenScheme(color);
+            },
+          }}
+        >
+          {children}
+        </AppThemeContext.Provider>
+      </SNThemeProvider>
+      ,
     </RNThemeProvider>
   );
 }
